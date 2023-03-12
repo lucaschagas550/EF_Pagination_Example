@@ -1,10 +1,11 @@
-﻿using EF_Pagination_Example.Data;
+﻿using EF_Pagination_Example.Business.Interfaces;
+using EF_Pagination_Example.Business.Notifications;
+using EF_Pagination_Example.Business.Services;
+using EF_Pagination_Example.Data;
 using EF_Pagination_Example.Data.Repositories.DataAccess;
 using EF_Pagination_Example.Data.Repositories.Interfaces;
 using EF_Pagination_Example.Data.Uow;
 using EF_Pagination_Example.Data.Uow.Interfaces;
-using EF_Pagination_Example.Services;
-using EF_Pagination_Example.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace EF_Pagination_Example
@@ -29,8 +30,10 @@ namespace EF_Pagination_Example
 
             services.AddScoped<AppDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<ICategoryServices, CategoryService>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+
+            services.AddScoped<ICategoryServices, CategoryService>();
+            services.AddScoped<INotifier, Notifier>();
         }
 
         public void Configure(WebApplication app, IWebHostEnvironment env)

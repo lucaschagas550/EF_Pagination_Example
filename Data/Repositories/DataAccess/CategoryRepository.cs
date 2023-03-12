@@ -16,14 +16,21 @@ namespace EF_Pagination_Example.Data.Repositories.DataAccess
 
         public async Task<Page<Category>> Get(CategoryPage categoryPage)
         {
-            IQueryable<Category> queryData = _context.Category.AsQueryable();
-            ListApplyWhere(categoryPage, ref queryData);
-            ListApplyOrderBy(categoryPage, ref queryData);
+            try
+            {
+                IQueryable<Category> queryData = _context.Category.AsQueryable();
+                ListApplyWhere(categoryPage, ref queryData);
+                ListApplyOrderBy(categoryPage, ref queryData);
 
-            var content = await Paginate(queryData, categoryPage).ConfigureAwait(false);
-            var total = await queryData.CountAsync().ConfigureAwait(false);
+                var content = await Paginate(queryData, categoryPage).ConfigureAwait(false);
+                var total = await queryData.CountAsync().ConfigureAwait(false);
 
-            return new Page<Category>(total, content, categoryPage);
+                return new Page<Category>(total, content, categoryPage);
+            }
+            catch (Exception exception)
+            {
+                throw new ApplicationException(exception.Message);
+            }
         }
 
         private void ListApplyWhere(CategoryPage categoryPage, ref IQueryable<Category> queryData)

@@ -1,15 +1,15 @@
-﻿using EF_Pagination_Example.Data.Pagination.Base;
+﻿using EF_Pagination_Example.Business.Interfaces;
+using EF_Pagination_Example.Data.Pagination.Base;
 using EF_Pagination_Example.Data.Pagination.Page;
 using EF_Pagination_Example.Data.Repositories.Interfaces;
 using EF_Pagination_Example.Model;
-using EF_Pagination_Example.Services.Interfaces;
 
-namespace EF_Pagination_Example.Services
+namespace EF_Pagination_Example.Business.Services
 {
-    public class CategoryService : ICategoryServices
+    public class CategoryService : BaseService, ICategoryServices
     {
         private readonly ICategoryRepository _categoryRepository;
-        public CategoryService(ICategoryRepository categoryRepository)
+        public CategoryService(INotifier notifier, ICategoryRepository categoryRepository) : base(notifier)
         {
             _categoryRepository = categoryRepository;
         }
@@ -31,7 +31,11 @@ namespace EF_Pagination_Example.Services
 
         public async Task<Category?> GetById(Guid id)
         {
-            return await _categoryRepository.GetById(id).ConfigureAwait(false);
+            var entity = await _categoryRepository.GetById(id).ConfigureAwait(false);
+
+            if (entity == null) Notify("item not found");
+
+            return entity;
         }
 
         public async Task<Category> Update(Category category)
