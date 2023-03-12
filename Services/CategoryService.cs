@@ -16,12 +16,12 @@ namespace EF_Pagination_Example.Services
 
         public async Task<Category> Create(Category category)
         {
-            throw new NotImplementedException();
+            return await _categoryRepository.Create(category).ConfigureAwait(false);
         }
 
-        public async Task<Category> Delete(Guid id)
+        public async Task Delete(Guid id)
         {
-            throw new NotImplementedException();
+            await _categoryRepository.Delete(id).ConfigureAwait(false);
         }
 
         public async Task<Page<Category>> Get(CategoryPage pagination)
@@ -29,14 +29,14 @@ namespace EF_Pagination_Example.Services
             return await _categoryRepository.Get(pagination).ConfigureAwait(false);
         }
 
-        public async Task<Category> GetById(Guid id)
+        public async Task<Category?> GetById(Guid id)
         {
-            throw new NotImplementedException();
+            return await _categoryRepository.GetById(id).ConfigureAwait(false);
         }
 
         public async Task<Category> Update(Category category)
         {
-            throw new NotImplementedException();
+            return await _categoryRepository.Update(category).ConfigureAwait(false);
         }
     }
 }

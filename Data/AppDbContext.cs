@@ -9,7 +9,7 @@ namespace EF_Pagination_Example.Data
         {
         }
 
-        public DbSet<Category> Category { get; set; }
+        public DbSet<Category> Category { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

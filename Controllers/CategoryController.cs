@@ -32,7 +32,10 @@ namespace EF_Pagination_Example.Controllers
             Ok(await _categoryServices.Create(category).ConfigureAwait(false));
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Category>> Delete(Guid id) =>
-            Ok(await _categoryServices.Delete(id).ConfigureAwait(false));
+        public async Task<ActionResult> Delete(Guid id) 
+        {
+            await _categoryServices.Delete(id).ConfigureAwait(false);
+            return Ok();
+        }
     }
 }

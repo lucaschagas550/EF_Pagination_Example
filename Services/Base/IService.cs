@@ -5,9 +5,9 @@ namespace EF_Pagination_Example.Services.Base
 {
     public interface IService<TEntity> where TEntity : Entity
     {
-        Task<TEntity> GetById(Guid id);
+        Task<TEntity?> GetById(Guid id);
         Task<TEntity> Create(TEntity entity);
         Task<TEntity> Update(TEntity entity);
-        Task<TEntity> Delete(Guid id);
+        Task Delete(Guid id);
     }
 }
