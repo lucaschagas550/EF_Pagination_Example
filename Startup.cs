@@ -12,17 +12,24 @@ namespace EF_Pagination_Example
 {
     public class Startup
     {
-        public IConfiguration Configuration { get; }
+        private IConfiguration Configuration { get; }
 
         public Startup(IConfiguration configuration) =>
             Configuration = configuration;
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"))
-                    .EnableSensitiveDataLogging()
-                    .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole())));
+            services.AddDbContext<AppDbContext>(optionsBuilder =>
+                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), 
+                    options =>
+                        {
+                            options.EnableRetryOnFailure(
+                                maxRetryCount: 3,
+                                maxRetryDelay: TimeSpan.FromSeconds(10),
+                                errorNumbersToAdd: new List<int> { 4060 });
+                        })
+                .EnableSensitiveDataLogging()
+                .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole())));
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();
@@ -32,11 +39,11 @@ namespace EF_Pagination_Example
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
 
-            services.AddScoped<ICategoryServices, CategoryService>();
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<INotifier, Notifier>();
         }
 
-        public void Configure(WebApplication app, IWebHostEnvironment env)
+        public static void Configure(WebApplication app, IWebHostEnvironment env)
         {
             if (app.Environment.IsDevelopment())
             {

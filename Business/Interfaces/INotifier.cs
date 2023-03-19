@@ -5,7 +5,8 @@ namespace EF_Pagination_Example.Business.Interfaces
     public interface INotifier
     {
         bool HasNotifications();
-        List<Notification> GetNotifications();
-        void Handle(Notification notificacao);
+        IEnumerable<Notification> GetNotifications();
+        void Handle(Notification notification);
+        void ClearErrors();
     }
 }

@@ -1,4 +1,5 @@
 ﻿using EF_Pagination_Example.Business.Interfaces;
+using EF_Pagination_Example.Communication;
 using EF_Pagination_Example.Data.Pagination.Base;
 using EF_Pagination_Example.Data.Pagination.Page;
 using EF_Pagination_Example.Model;
@@ -9,35 +10,45 @@ namespace EF_Pagination_Example.Controllers
     [Route("[controller]")]
     public class CategoryController : MainController
     {
-        private readonly ICategoryServices _categoryServices;
+        private readonly ICategoryService _categoryService;
 
-        public CategoryController(INotifier notifier, ICategoryServices categoryServices) : base(notifier)=>
-            _categoryServices = categoryServices;
+        public CategoryController(INotifier notifier, ICategoryService categoryService) : base(notifier)=>
+            _categoryService = categoryService;
 
         [HttpGet()]
+        [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Page<Category>>> Get([FromQuery] CategoryPage pagination) =>
-            CustomResponse(await _categoryServices.Get(pagination).ConfigureAwait(false));
+             CustomResponse(await _categoryService.Get(pagination).ConfigureAwait(false));    
 
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Category>> GetById(Guid id) =>
-            CustomResponse(await _categoryServices.GetById(id).ConfigureAwait(false));
+             CustomResponse(await _categoryService.GetById(id).ConfigureAwait(false));
 
         [HttpPost()]
+        [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Category>> Post(Category category)
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            return CustomResponse(await _categoryServices.Create(category).ConfigureAwait(false));
+            return CustomResponse(await _categoryService.Create(category).ConfigureAwait(false));
         }
 
         [HttpPut()]
+        [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Category>> Put(Category category) =>
-            CustomResponse(await _categoryServices.Create(category).ConfigureAwait(false));
+            CustomResponse(await _categoryService.Update(category).ConfigureAwait(false));
 
-        [HttpDelete("{id}")]
-        public async Task<ActionResult> Delete(Guid id) 
+        [HttpDelete("{category}")]
+        [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> Delete(Category category) 
         {
-            await _categoryServices.Delete(id).ConfigureAwait(false);
+            await _categoryService.Delete(category).ConfigureAwait(false);
             return CustomResponse();
         }
     }

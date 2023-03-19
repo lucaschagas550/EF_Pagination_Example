@@ -1,5 +1,6 @@
 ﻿using EF_Pagination_Example.Business.Interfaces;
 using EF_Pagination_Example.Business.Notifications;
+using EF_Pagination_Example.Communication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
@@ -14,7 +15,7 @@ namespace EF_Pagination_Example.Controllers
         protected Guid UserId { get; set; }
         protected bool AuthenticatedUser { get; set; }
 
-        public MainController(INotifier notifier
+        protected MainController(INotifier notifier
                               /*IUser appUser*/)
         {
             _notifier = notifier;
@@ -34,20 +35,9 @@ namespace EF_Pagination_Example.Controllers
 
         protected ActionResult CustomResponse(object? result = null)
         {
-            if (ValidOperation())
-            {
-                return Ok(new
-                {
-                    success = true,
-                    data = result
-                });
-            }
+            if (ValidOperation()) return Ok(new ResponseSuccess(result));
 
-            return BadRequest(new
-            {
-                success = false,
-                erros = _notifier.GetNotifications().Select(n => n.Message)
-            });
+            return BadRequest(new ResponseFailure(_notifier.GetNotifications().Select(n => n.Message)));
         }
 
         protected ActionResult CustomResponse(ModelStateDictionary modelState)
@@ -70,5 +60,27 @@ namespace EF_Pagination_Example.Controllers
         {
             _notifier.Handle(new Notification(message));
         }
+        
+        protected ActionResult CustomResponse(ResponseExternalResult response)
+        {
+            ResponsePossuiErros(response);
+
+            return CustomResponse();
+        }
+
+        protected bool ResponsePossuiErros(ResponseExternalResult response)
+        {
+            if (response == null || !response.Errors.Messages.Any()) return false;
+
+            foreach (var mensagem in response.Errors.Messages)
+            {
+                NotifyError(mensagem);
+            }
+
+            return true;
+        }
+        
+        protected void ClearProcessingErrors() =>
+            _notifier.ClearErrors();
     }
 }

@@ -4,26 +4,21 @@ namespace EF_Pagination_Example.Business.Notifications
 {
     public class Notifier : INotifier
     {
-        private List<Notification> _notifications;
+        private readonly List<Notification> _notifications;
 
-        public Notifier()
-        {
+        public Notifier() =>
             _notifications = new List<Notification>();
-        }
 
-        public void Handle(Notification notification)
-        {
+        public void Handle(Notification notification) =>
             _notifications.Add(notification);
-        }
+        
+        public void ClearErrors() =>
+            _notifications.Clear();
 
-        public List<Notification> GetNotifications()
-        {
-            return _notifications;
-        }
+        public IEnumerable<Notification> GetNotifications() =>
+            _notifications;
 
-        public bool HasNotifications()
-        {
-            return _notifications.Any();
-        }
+        public bool HasNotifications() =>
+            _notifications.Any();
     }
 }

@@ -4,8 +4,8 @@ namespace EF_Pagination_Example.Data.Pagination.Base
 {
     public class Page<T>
     {
-        private const int GREATER_THAN_ONE = 1;
-        private const int EQUAL_TO_ONE = 1;
+        private const int GreaterThanOne = 1;
+        private const int EqualToOne = 1;
 
         public IEnumerable<T> Content { get; }
         public int TotalPages { get; }
@@ -28,10 +28,10 @@ namespace EF_Pagination_Example.Data.Pagination.Base
 
             TotalPages = (int)Math.Ceiling((double)TotalElements / pageable.Size);
 
-            HasPrevious = Number > GREATER_THAN_ONE;
+            HasPrevious = Number > GreaterThanOne;
             HasNext = Number < TotalPages;
 
-            IsFirst = Number == EQUAL_TO_ONE;
+            IsFirst = Number == EqualToOne;
             IsLast = Number == TotalPages;
         }
     }

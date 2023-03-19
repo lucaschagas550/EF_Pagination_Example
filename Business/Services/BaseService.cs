@@ -1,8 +1,9 @@
-﻿using EF_Pagination_Example.Business.Interfaces;
+﻿using System.Net;
+using System.Text;
+using System.Text.Json;
+using EF_Pagination_Example.Business.Interfaces;
 using EF_Pagination_Example.Business.Notifications;
-using EF_Pagination_Example.Model;
-using FluentValidation;
-using FluentValidation.Results;
+using EF_Pagination_Example.Communication;
 
 namespace EF_Pagination_Example.Business.Services
 {
@@ -15,17 +16,34 @@ namespace EF_Pagination_Example.Business.Services
             _notifier = notifier;
         }
 
-        protected void Notify(ValidationResult validationResult)
+        protected void Notify(string message) =>
+            _notifier.Handle(new Notification(message));
+
+        protected StringContent SerializeObject(object data) =>
+            new StringContent(
+                JsonSerializer.Serialize(data),
+                Encoding.UTF8,
+                "application/json");
+
+        protected async Task<T?> DeserializeObject<T>(HttpResponseMessage responseMessage)
         {
-            foreach (var error in validationResult.Errors)
+            var options = new JsonSerializerOptions
             {
-                Notify(error.ErrorMessage);
-            }
+                PropertyNameCaseInsensitive = true
+            };
+
+            return JsonSerializer.Deserialize<T>(await responseMessage.Content.ReadAsStringAsync(), options);
         }
 
-        protected void Notify(string mensagem)
+        protected bool HandleResponseErrors(HttpResponseMessage response)
         {
-            _notifier.Handle(new Notification(mensagem));
+            if (response.StatusCode == HttpStatusCode.BadRequest) return false;
+
+            response.EnsureSuccessStatusCode();
+            return true;
         }
+
+        protected ResponseExternalResult ReturnOk() =>
+            new ResponseExternalResult();
     }
 }

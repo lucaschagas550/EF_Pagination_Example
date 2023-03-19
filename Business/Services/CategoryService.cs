@@ -6,7 +6,7 @@ using EF_Pagination_Example.Model;
 
 namespace EF_Pagination_Example.Business.Services
 {
-    public class CategoryService : BaseService, ICategoryServices
+    public class CategoryService : BaseService, ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
         public CategoryService(INotifier notifier, ICategoryRepository categoryRepository) : base(notifier)
@@ -19,9 +19,9 @@ namespace EF_Pagination_Example.Business.Services
             return await _categoryRepository.Create(category).ConfigureAwait(false);
         }
 
-        public async Task Delete(Guid id)
+        public async Task<Category> Delete(Category category)
         {
-            await _categoryRepository.Delete(id).ConfigureAwait(false);
+            return await _categoryRepository.Delete(category).ConfigureAwait(false);
         }
 
         public async Task<Page<Category>> Get(CategoryPage pagination)

@@ -18,7 +18,7 @@ namespace EF_Pagination_Example.Data.Repositories.DataAccess
         {
             try
             {
-                IQueryable<Category> queryData = _context.Category.AsQueryable();
+                var queryData = Context().Category.AsQueryable();
                 ListApplyWhere(categoryPage, ref queryData);
                 ListApplyOrderBy(categoryPage, ref queryData);
 
@@ -33,14 +33,14 @@ namespace EF_Pagination_Example.Data.Repositories.DataAccess
             }
         }
 
-        private void ListApplyWhere(CategoryPage categoryPage, ref IQueryable<Category> queryData)
+        private static void ListApplyWhere(CategoryPage categoryPage, ref IQueryable<Category> queryData)
         {
             if (!string.IsNullOrWhiteSpace(categoryPage.Search)) queryData = queryData.Where(c => c.Name.ToUpper().Contains(categoryPage.Search.ToUpper()));
             if (!string.IsNullOrWhiteSpace(categoryPage.Name)) queryData = queryData.Where(c => c.Name.ToUpper().Equals(categoryPage.Name.ToUpper()));
             if (!string.IsNullOrWhiteSpace(categoryPage.Description)) queryData = queryData.Where(o => o.Description.ToUpper().Equals(categoryPage.Description.ToUpper()));
         }
 
-        private void ListApplyOrderBy(CategoryPage categoryPage, ref IQueryable<Category> queryData)
+        private static void ListApplyOrderBy(CategoryPage categoryPage, ref IQueryable<Category> queryData)
         {
             switch (categoryPage.Sort)
             {

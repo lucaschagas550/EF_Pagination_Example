@@ -8,24 +8,43 @@ namespace EF_Pagination_Example.Data.Repositories.Base
 {
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
-        private const int LESS_ONE = 1;
+        private const int LessOne = 1;
 
         private readonly IUnitOfWork _uow;
-        protected readonly AppDbContext _context;
-        protected readonly DbSet<TEntity> dbSet;
+        private readonly AppDbContext _context;
+        private readonly DbSet<TEntity> _dbSet;
 
-        public Repository(IUnitOfWork uow, AppDbContext context)
+        protected Repository(IUnitOfWork uow, AppDbContext context)
         {
             _uow = uow;
             _context = context;
-            dbSet = context.Set<TEntity>();
+            _dbSet = context.Set<TEntity>();
+        }
+
+        protected AppDbContext Context() => _context;
+
+        public async Task<IEnumerable<TEntity>> Paginate(IQueryable<TEntity> query, Pageable pageable)
+        {
+            try
+            {
+                return await query
+                                .AsNoTrackingWithIdentityResolution()
+                                .Skip((pageable.Page - LessOne) * pageable.Size)
+                                .Take(pageable.Size)
+                                .ToListAsync()
+                                .ConfigureAwait(false);
+            }
+            catch (Exception exception)
+            {
+                throw new ApplicationException(exception.Message);
+            }
         }
 
         public async Task<TEntity?> GetById(Guid id)
         {
             try
             {
-                return await dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id.Equals(id)).ConfigureAwait(false);
+                return await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id.Equals(id)).ConfigureAwait(false);
             }
             catch (Exception exception)
             {
@@ -37,7 +56,7 @@ namespace EF_Pagination_Example.Data.Repositories.Base
         {
             try
             {
-                var result = await dbSet.AddAsync(entity).ConfigureAwait(false);
+                var result = await _dbSet.AddAsync(entity).ConfigureAwait(false);
                 await _uow.Commit().ConfigureAwait(false);
                 return result.Entity;
             }
@@ -47,17 +66,13 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task Delete(Guid id)
+        public async Task<IEnumerable<TEntity>> Create(ICollection<TEntity> entities)
         {
             try
             {
-                var entity = dbSet.FirstOrDefault(e => e.Id.Equals(id));
-
-                if (entity != null)
-                {
-                    var result = dbSet.Remove(entity);
-                    await _uow.Commit().ConfigureAwait(false);
-                }
+                await _dbSet.AddRangeAsync(entities).ConfigureAwait(false);
+                await _uow.Commit().ConfigureAwait(false);
+                return entities;
             }
             catch (Exception exception)
             {
@@ -69,7 +84,7 @@ namespace EF_Pagination_Example.Data.Repositories.Base
         {
             try
             {
-                var result = dbSet.Update(entity);
+                var result = _dbSet.Update(entity);
                 await _uow.Commit().ConfigureAwait(false);
                 return result.Entity;
             }
@@ -79,15 +94,41 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<IEnumerable<TEntity>> Paginate(IQueryable<TEntity> query, Pageable pageable)
+        public async Task<IEnumerable<TEntity>> Update(ICollection<TEntity> entities)
         {
             try
             {
-                return await query.AsNoTrackingWithIdentityResolution()
-                   .Skip((pageable.Page - LESS_ONE) * pageable.Size)
-                   .Take(pageable.Size)
-                   .ToListAsync()
-                   .ConfigureAwait(false);
+                _dbSet.UpdateRange(entities);
+                await _uow.Commit().ConfigureAwait(false);
+                return entities;
+            }
+            catch (Exception exception)
+            {
+                throw new ApplicationException(exception.Message);
+            }
+        }
+
+        public async Task<TEntity> Delete(TEntity entity)
+        {
+            try
+            {
+                var result = _dbSet.Remove(entity);
+                await _uow.Commit().ConfigureAwait(false);
+                return result.Entity;
+            }
+            catch (Exception exception)
+            {
+                throw new ApplicationException(exception.Message);
+            }
+        }
+
+        public async Task<IEnumerable<TEntity>> Delete(ICollection<TEntity> entities)
+        {
+            try
+            {
+                _dbSet.RemoveRange(entities);
+                await _uow.Commit().ConfigureAwait(false);
+                return entities;
             }
             catch (Exception exception)
             {

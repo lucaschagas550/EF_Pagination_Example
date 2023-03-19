@@ -4,7 +4,7 @@ using EF_Pagination_Example.Model;
 
 namespace EF_Pagination_Example.Business.Interfaces
 {
-    public interface ICategoryServices : IService<Category>
+    public interface ICategoryService : ICrudServices<Category>
     {
         Task<Page<Category>> Get(CategoryPage pagination);
     }
