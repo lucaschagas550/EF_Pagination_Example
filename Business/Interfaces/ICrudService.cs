@@ -7,5 +7,5 @@ public interface ICrudServices<TEntity> where TEntity : Entity
     Task<TEntity?> GetById(Guid id);
     Task<TEntity> Create(TEntity entity);
     Task<TEntity> Update(TEntity entity);
-    Task<Category> Delete(Category category);
+    Task<TEntity> Delete(TEntity category);
 }

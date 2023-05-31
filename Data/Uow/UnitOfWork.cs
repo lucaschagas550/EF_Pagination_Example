@@ -14,8 +14,14 @@ namespace EF_Pagination_Example.Data.Uow
             await _context.SaveChangesAsync().ConfigureAwait(false) > Empty;
 
         public void Dispose()
-        {
+        { 
             _context.Dispose();
+            GC.SuppressFinalize(this);
+        }
+
+        public async ValueTask DisposeAsync()
+        {           
+            await _context.DisposeAsync().ConfigureAwait(false);
             GC.SuppressFinalize(this);
         }
     }
