@@ -14,16 +14,18 @@ namespace EF_Pagination_Example.Data.Repositories.DataAccess
         {
         }
 
-        public async Task<Page<Category>> Get(CategoryPage categoryPage)
+        public async Task<Page<Category>> Get(CategoryPage categoryPage, CancellationToken cancellationToken)
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 var queryData = Context().Category.AsQueryable();
                 ListApplyWhere(categoryPage, ref queryData);
                 ListApplyOrderBy(categoryPage, ref queryData);
 
-                var content = await Paginate(queryData, categoryPage).ConfigureAwait(false);
-                var total = await queryData.CountAsync().ConfigureAwait(false);
+                var content = await Paginate(queryData, categoryPage, cancellationToken).ConfigureAwait(false);
+                var total = await queryData.CountAsync(cancellationToken).ConfigureAwait(false);
 
                 return new Page<Category>(total, content, categoryPage);
             }

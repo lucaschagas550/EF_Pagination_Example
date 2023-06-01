@@ -19,13 +19,13 @@ namespace EF_Pagination_Example.Controllers
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Page<Category>>> Get([FromQuery] CategoryPage pagination) =>
-             CustomResponse(await _categoryService.Get(pagination).ConfigureAwait(false));    
+             CustomResponse(await _categoryService.Get(pagination, CancellationToken.None).ConfigureAwait(false));    
 
         [HttpGet("{id}")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Category>> GetById(Guid id) =>
-             CustomResponse(await _categoryService.GetById(id).ConfigureAwait(false));
+             CustomResponse(await _categoryService.GetById(id, CancellationToken.None).ConfigureAwait(false));
 
         [HttpPost()]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
@@ -34,21 +34,21 @@ namespace EF_Pagination_Example.Controllers
         {
             if (!ModelState.IsValid) return CustomResponse(ModelState);
 
-            return CustomResponse(await _categoryService.Create(category).ConfigureAwait(false));
+            return CustomResponse(await _categoryService.Create(category, CancellationToken.None).ConfigureAwait(false));
         }
 
         [HttpPut()]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Category>> Put(Category category) =>
-            CustomResponse(await _categoryService.Update(category).ConfigureAwait(false));
+            CustomResponse(await _categoryService.Update(category, CancellationToken.None).ConfigureAwait(false));
 
         [HttpDelete("{category}")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> Delete(Category category) 
         {
-            await _categoryService.Delete(category).ConfigureAwait(false);
+            await _categoryService.Delete(category, CancellationToken.None).ConfigureAwait(false);
             return CustomResponse();
         }
     }

@@ -14,33 +14,43 @@ namespace EF_Pagination_Example.Business.Services
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<Category> Create(Category category)
+        public async Task<Category> Create(Category category, CancellationToken cancellationToken)
         {
-            return await _categoryRepository.Create(category).ConfigureAwait(false);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return await _categoryRepository.Create(category, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<Category> Delete(Category category)
+        public async Task<Category> Delete(Category category, CancellationToken cancellationToken)
         {
-            return await _categoryRepository.Delete(category).ConfigureAwait(false);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return await _categoryRepository.Delete(category, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<Page<Category>> Get(CategoryPage pagination)
+        public async Task<Page<Category>> Get(CategoryPage pagination, CancellationToken cancellationToken)
         {
-            return await _categoryRepository.Get(pagination).ConfigureAwait(false);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return await _categoryRepository.Get(pagination, cancellationToken).ConfigureAwait(false);
         }
 
-        public async Task<Category?> GetById(Guid id)
+        public async Task<Category?> GetById(Guid id, CancellationToken cancellationToken)
         {
-            var entity = await _categoryRepository.GetById(id).ConfigureAwait(false);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var entity = await _categoryRepository.GetById(id, cancellationToken).ConfigureAwait(false);
 
             if (entity == null) Notify("item not found");
 
             return entity;
         }
 
-        public async Task<Category> Update(Category category)
+        public async Task<Category> Update(Category category, CancellationToken cancellationToken)
         {
-            return await _categoryRepository.Update(category).ConfigureAwait(false);
+            cancellationToken.ThrowIfCancellationRequested();
+
+            return await _categoryRepository.Update(category, cancellationToken).ConfigureAwait(false);
         }
     }
 }

@@ -6,6 +6,6 @@ namespace EF_Pagination_Example.Data.Repositories.Interfaces
 {
     public interface ICategoryRepository : IRepository<Category>
     {
-        Task<Page<Category>> Get(CategoryPage categoryPage);
+        Task<Page<Category>> Get(CategoryPage categoryPage, CancellationToken cancellationToken);
     }
 }

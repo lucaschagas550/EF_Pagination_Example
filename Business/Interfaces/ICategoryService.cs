@@ -6,6 +6,6 @@ namespace EF_Pagination_Example.Business.Interfaces
 {
     public interface ICategoryService : ICrudServices<Category>
     {
-        Task<Page<Category>> Get(CategoryPage pagination);
+        Task<Page<Category>> Get(CategoryPage pagination, CancellationToken cancellationToken);
     }
 }

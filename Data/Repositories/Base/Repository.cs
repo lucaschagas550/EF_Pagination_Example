@@ -23,15 +23,17 @@ namespace EF_Pagination_Example.Data.Repositories.Base
 
         protected AppDbContext Context() => _context;
 
-        public async Task<IEnumerable<TEntity>> Paginate(IQueryable<TEntity> query, Pageable pageable)
+        public async Task<IEnumerable<TEntity>> Paginate(IQueryable<TEntity> query, Pageable pageable, CancellationToken cancellationToken)
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 return await query
                                 .AsNoTrackingWithIdentityResolution()
                                 .Skip((pageable.Page - LessOne) * pageable.Size)
                                 .Take(pageable.Size)
-                                .ToListAsync()
+                                .ToListAsync(cancellationToken)
                                 .ConfigureAwait(false);
             }
             catch (Exception exception)
@@ -40,11 +42,13 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<TEntity?> GetById(Guid id)
+        public async Task<TEntity?> GetById(Guid id, CancellationToken cancellationToken)
         {
             try
             {
-                return await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id.Equals(id)).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                return await _dbSet.AsNoTracking().FirstOrDefaultAsync(e => e.Id.Equals(id), cancellationToken).ConfigureAwait(false);
             }
             catch (Exception exception)
             {
@@ -52,11 +56,13 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<TEntity> Create(TEntity entity)
+        public async Task<TEntity> Create(TEntity entity, CancellationToken cancellationToken)
         {
             try
             {
-                var result = await _dbSet.AddAsync(entity).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var result = await _dbSet.AddAsync(entity, cancellationToken).ConfigureAwait(false);
                 await _uow.Commit().ConfigureAwait(false);
                 return result.Entity;
             }
@@ -66,11 +72,13 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<IEnumerable<TEntity>> Create(ICollection<TEntity> entities)
+        public async Task<IEnumerable<TEntity>> Create(ICollection<TEntity> entities, CancellationToken cancellationToken)
         {
             try
             {
-                await _dbSet.AddRangeAsync(entities).ConfigureAwait(false);
+                cancellationToken.ThrowIfCancellationRequested();
+
+                await _dbSet.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
                 await _uow.Commit().ConfigureAwait(false);
                 return entities;
             }
@@ -80,10 +88,12 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<TEntity> Update(TEntity entity)
+        public async Task<TEntity> Update(TEntity entity, CancellationToken cancellationToken)
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 var result = _dbSet.Update(entity);
                 await _uow.Commit().ConfigureAwait(false);
                 return result.Entity;
@@ -94,10 +104,12 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<IEnumerable<TEntity>> Update(ICollection<TEntity> entities)
+        public async Task<IEnumerable<TEntity>> Update(ICollection<TEntity> entities, CancellationToken cancellationToken)
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 _dbSet.UpdateRange(entities);
                 await _uow.Commit().ConfigureAwait(false);
                 return entities;
@@ -108,10 +120,12 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<TEntity> Delete(TEntity entity)
+        public async Task<TEntity> Delete(TEntity entity, CancellationToken cancellationToken)
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 var result = _dbSet.Remove(entity);
                 await _uow.Commit().ConfigureAwait(false);
                 return result.Entity;
@@ -122,10 +136,12 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<IEnumerable<TEntity>> Delete(ICollection<TEntity> entities)
+        public async Task<IEnumerable<TEntity>> Delete(ICollection<TEntity> entities, CancellationToken cancellationToken)
         {
             try
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 _dbSet.RemoveRange(entities);
                 await _uow.Commit().ConfigureAwait(false);
                 return entities;
