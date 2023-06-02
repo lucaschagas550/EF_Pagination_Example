@@ -20,7 +20,7 @@ namespace EF_Pagination_Example
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(optionsBuilder =>
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), 
+                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
                     options =>
                         {
                             options.EnableRetryOnFailure(
@@ -56,6 +56,15 @@ namespace EF_Pagination_Example
             app.UseAuthorization();
 
             app.MapControllers();
+
+            #region
+            ///Verificar se existe alguma migracao pendente e aplicar todas ao iniciar a aplicacao
+            //using (var scope = app.Services.CreateScope())
+            //{
+            //    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+            //    dbContext.Database.Migrate();
+            //}
+            #endregion
         }
     }
 }
