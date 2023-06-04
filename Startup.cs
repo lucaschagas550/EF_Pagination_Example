@@ -1,6 +1,7 @@
 ﻿using EF_Pagination_Example.Business.Interfaces;
 using EF_Pagination_Example.Business.Notifications;
 using EF_Pagination_Example.Business.Services;
+using EF_Pagination_Example.Configuration;
 using EF_Pagination_Example.Data;
 using EF_Pagination_Example.Data.Repositories.DataAccess;
 using EF_Pagination_Example.Data.Repositories.Interfaces;
@@ -30,6 +31,8 @@ namespace EF_Pagination_Example
                         })
                 .EnableSensitiveDataLogging()
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole())));
+
+            services.AddIdentityConfig(Configuration);
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();
