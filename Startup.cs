@@ -44,9 +44,10 @@ namespace EF_Pagination_Example
 
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<INotifier, Notifier>();
+            services.AddScoped<IInitialUserService, InitialUserService>();
         }
 
-        public static void Configure(WebApplication app, IWebHostEnvironment env)
+        public static async Task Configure(WebApplication app)
         {
             if (app.Environment.IsDevelopment())
             {
@@ -59,6 +60,13 @@ namespace EF_Pagination_Example
             app.UseAuthorization();
 
             app.MapControllers();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var initialUser = scope.ServiceProvider.GetRequiredService<IInitialUserService>();
+                await initialUser.CreateRole();
+                await initialUser.CreateAdmin();
+            }
 
             #region
             ///Verificar se existe alguma migracao pendente e aplicar todas ao iniciar a aplicacao

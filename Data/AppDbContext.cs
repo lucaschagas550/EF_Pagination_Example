@@ -14,7 +14,7 @@ namespace EF_Pagination_Example.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<AppUser>().ToTable("ApsNetUsers").HasKey(t => t.Id); //mapeia a tabela para a model de appuser
+            modelBuilder.Entity<AppUser>().ToTable("AspNetUsers").HasKey(t => t.Id); //mapeia a tabela para a model de appuser
 
             foreach (var property in modelBuilder.Model.GetEntityTypes().SelectMany(
                 e => e.GetProperties().Where(p => p.ClrType == typeof(string))))
