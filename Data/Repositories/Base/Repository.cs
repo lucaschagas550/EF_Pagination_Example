@@ -10,7 +10,7 @@ namespace EF_Pagination_Example.Data.Repositories.Base
     {
         private const int LessOne = 1;
 
-        private readonly IUnitOfWork _uow;
+        protected readonly IUnitOfWork _uow;
         private readonly AppDbContext _context;
         private readonly DbSet<TEntity> _dbSet;
 
@@ -145,6 +145,18 @@ namespace EF_Pagination_Example.Data.Repositories.Base
                 _dbSet.RemoveRange(entities);
                 await _uow.Commit().ConfigureAwait(false);
                 return entities;
+            }
+            catch (Exception exception)
+            {
+                throw new ApplicationException(exception.Message);
+            }
+        }
+
+        public async Task Commit()
+        {
+            try
+            {
+                await _uow.Commit().ConfigureAwait(false);
             }
             catch (Exception exception)
             {

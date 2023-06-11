@@ -7,6 +7,7 @@ using EF_Pagination_Example.Data.Repositories.DataAccess;
 using EF_Pagination_Example.Data.Repositories.Interfaces;
 using EF_Pagination_Example.Data.Uow;
 using EF_Pagination_Example.Data.Uow.Interfaces;
+using EF_Pagination_Example.Extensions;
 using Microsoft.EntityFrameworkCore;
 
 namespace EF_Pagination_Example
@@ -33,6 +34,7 @@ namespace EF_Pagination_Example
                 .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole())));
 
             services.AddIdentityConfig(Configuration);
+            services.AddJwtConfig(Configuration);
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();
@@ -41,10 +43,14 @@ namespace EF_Pagination_Example
             services.AddScoped<AppDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
 
-            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<INotifier, Notifier>();
+            services.AddScoped<IAspNetUser, AspNetUser>();
+            
+            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IInitialUserService, InitialUserService>();
+            services.AddScoped<IAuthService, AuthService>();
         }
 
         public static async Task Configure(WebApplication app)
@@ -57,6 +63,7 @@ namespace EF_Pagination_Example
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.MapControllers();

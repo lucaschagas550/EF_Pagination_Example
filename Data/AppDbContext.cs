@@ -10,6 +10,7 @@ namespace EF_Pagination_Example.Data
         {
         }
 
+        public DbSet<RefreshToken> RefreshTokens { get; set; } = null!;
         public DbSet<Category> Category { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

@@ -19,6 +19,12 @@ namespace EF_Pagination_Example.Business.Services
         protected void Notify(string message) =>
             _notifier.Handle(new Notification(message));
 
+        protected T Notify<T>(string message, T item) where T : class
+        {
+           _notifier.Handle(new Notification(message));
+            return item;
+        }
+
         protected StringContent SerializeObject(object data) =>
             new StringContent(
                 JsonSerializer.Serialize(data),

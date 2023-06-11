@@ -9,23 +9,25 @@ namespace EF_Pagination_Example.Controllers
     [ApiController]
     public abstract class MainController : ControllerBase
     {
-        private readonly INotifier _notifier;
-        //public readonly IUser AppUser;
-
         protected Guid UserId { get; set; }
+        
+        private readonly INotifier _notifier;
+        public readonly IAspNetUser _aspNetUser;
+
         protected bool AuthenticatedUser { get; set; }
 
-        protected MainController(INotifier notifier
-                              /*IUser appUser*/)
+        protected MainController(
+            INotifier notifier,
+            IAspNetUser appNetUser)
         {
             _notifier = notifier;
-            //AppUser = appUser;
+            _aspNetUser = appNetUser;
 
-            //if (appUser.IsAuthenticated())
-            //{
-            //    UserId = appUser.GetUserId();
-            //    AuthenticatedUser = true;
-            //}
+            if (appNetUser.IsAuthenticated())
+            {
+                UserId = appNetUser.GetUserId();
+                AuthenticatedUser = true;
+            }
         }
 
         protected bool ValidOperation()
@@ -35,14 +37,17 @@ namespace EF_Pagination_Example.Controllers
 
         protected ActionResult CustomResponse(object? result = null)
         {
-            if (ValidOperation()) return Ok(new ResponseSuccess(result));
+            if (ValidOperation())
+                return Ok(new ResponseSuccess(result));
 
             return BadRequest(new ResponseFailure(_notifier.GetNotifications().Select(n => n.Message)));
         }
 
         protected ActionResult CustomResponse(ModelStateDictionary modelState)
         {
-            if (!modelState.IsValid) NotifyInvalidModelError(modelState);
+            if (!modelState.IsValid)
+                NotifyInvalidModelError(modelState);
+
             return CustomResponse();
         }
 
@@ -60,15 +65,15 @@ namespace EF_Pagination_Example.Controllers
         {
             _notifier.Handle(new Notification(message));
         }
-        
+
         protected ActionResult CustomResponse(ResponseExternalResult response)
         {
-            ResponsePossuiErros(response);
+            ResponseHasErrors(response);
 
             return CustomResponse();
         }
 
-        protected bool ResponsePossuiErros(ResponseExternalResult response)
+        protected bool ResponseHasErrors(ResponseExternalResult response)
         {
             if (response == null || !response.Errors.Messages.Any()) return false;
 
@@ -79,7 +84,7 @@ namespace EF_Pagination_Example.Controllers
 
             return true;
         }
-        
+
         protected void ClearProcessingErrors() =>
             _notifier.ClearErrors();
     }

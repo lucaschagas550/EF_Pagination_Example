@@ -14,5 +14,6 @@ namespace EF_Pagination_Example.Data.Repositories.Interfaces
         Task<IEnumerable<TEntity>> Update(ICollection<TEntity> entity, CancellationToken cancellation);
         Task<TEntity> Delete(TEntity entity, CancellationToken cancellation);
         Task<IEnumerable<TEntity>> Delete(ICollection<TEntity> entities, CancellationToken cancellation);
+        Task Commit();
     }
 }

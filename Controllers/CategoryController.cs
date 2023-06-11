@@ -3,16 +3,18 @@ using EF_Pagination_Example.Communication;
 using EF_Pagination_Example.Data.Pagination.Base;
 using EF_Pagination_Example.Data.Pagination.Page;
 using EF_Pagination_Example.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EF_Pagination_Example.Controllers
 {
     [Route("[controller]")]
+    [Authorize(Roles = "Admin")]
     public class CategoryController : MainController
     {
         private readonly ICategoryService _categoryService;
 
-        public CategoryController(INotifier notifier, ICategoryService categoryService) : base(notifier)=>
+        public CategoryController(INotifier notifier, IAspNetUser aspNetUser, ICategoryService categoryService) : base(notifier, aspNetUser) =>
             _categoryService = categoryService;
 
         [HttpGet()]
@@ -21,7 +23,7 @@ namespace EF_Pagination_Example.Controllers
         public async Task<ActionResult<Page<Category>>> Get([FromQuery] CategoryPage pagination) =>
              CustomResponse(await _categoryService.Get(pagination, CancellationToken.None).ConfigureAwait(false));    
 
-        [HttpGet("{id}")]
+        [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Category>> GetById(Guid id) =>
@@ -43,6 +45,7 @@ namespace EF_Pagination_Example.Controllers
         public async Task<ActionResult<Category>> Put(Category category) =>
             CustomResponse(await _categoryService.Update(category, CancellationToken.None).ConfigureAwait(false));
 
+        //receber o id, validar e remover, ajustar service
         [HttpDelete("{category}")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]

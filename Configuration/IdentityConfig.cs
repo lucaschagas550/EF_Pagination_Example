@@ -16,9 +16,6 @@ namespace EF_Pagination_Example.Configuration
                 .AddErrorDescriber<IdentityErrorDescriber>()
                 .AddDefaultTokenProviders();
 
-            //JWT
-
-
             return services;
         }
     }

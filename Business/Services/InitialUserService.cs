@@ -22,9 +22,11 @@ namespace EF_Pagination_Example.Business.Services
             {
                 if (!await _roleManager.RoleExistsAsync("Admin").ConfigureAwait(false))
                 {
-                    IdentityRole role = new IdentityRole();
-                    role.Name = "Admin";
-                    role.NormalizedName = "ADMIN";
+                    var role = new IdentityRole
+                    {
+                        Name = "Admin",
+                        NormalizedName = "ADMIN"
+                    };
                     var roleResult = await _roleManager.CreateAsync(role).ConfigureAwait(false);
                 }
             }
@@ -41,14 +43,16 @@ namespace EF_Pagination_Example.Business.Services
                 if (await _userManager.FindByEmailAsync("admin@admin.com").ConfigureAwait(false) is not null)
                     return;
 
-                var user = new AppUser();
-                user.UserName = "admin";
-                user.Email = "admin@admin.com";
-                user.NormalizedUserName = "ADMIN";
-                user.NormalizedEmail = "ADMIN@ADMIN.COM";
-                user.EmailConfirmed = true;
-                user.LockoutEnabled = false;
-                user.SecurityStamp = Guid.NewGuid().ToString();
+                var user = new AppUser
+                {
+                    UserName = "admin",
+                    Email = "admin@admin.com",
+                    NormalizedUserName = "ADMIN",
+                    NormalizedEmail = "ADMIN@ADMIN.COM",
+                    EmailConfirmed = true,
+                    LockoutEnabled = false,
+                    SecurityStamp = Guid.NewGuid().ToString()
+                };
 
                 var claims = new List<Claim>()
                 {
@@ -66,8 +70,8 @@ namespace EF_Pagination_Example.Business.Services
                 if (roleResult.Errors.Any())
                     return;
 
-                var userClaimresult = await _userManager.AddClaimsAsync(user, claims).ConfigureAwait(false);
-                if (userClaimresult.Errors.Any())
+                var userClaimResult = await _userManager.AddClaimsAsync(user, claims).ConfigureAwait(false);
+                if (userClaimResult.Errors.Any())
                     return;
 
                 var role = await _roleManager.FindByNameAsync("Admin").ConfigureAwait(false);
