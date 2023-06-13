@@ -51,6 +51,7 @@ namespace EF_Pagination_Example
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IInitialUserService, InitialUserService>();
             services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IAdminService, AdminService>();
         }
 
         public static async Task Configure(WebApplication app)
