@@ -1,11 +1,11 @@
 ﻿using EF_Pagination_Example.Data.Pagination.Base;
 using EF_Pagination_Example.Data.Pagination.Page;
-using Microsoft.AspNetCore.Identity;
+using EF_Pagination_Example.ViewModels;
 
 namespace EF_Pagination_Example.Business.Interfaces
 {
     public interface IRolesManagementService
     {
-        Task<Page<IdentityRole>> GetRolesAsync(RolePage rolePage, CancellationToken cancellationToken);
+        Task<Page<PermissionsViewModel>> GetRolesAsync(RolePage rolePage, CancellationToken cancellationToken);
     }
 }

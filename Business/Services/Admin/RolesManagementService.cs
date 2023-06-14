@@ -2,6 +2,7 @@
 using EF_Pagination_Example.Data.Pagination.Base;
 using EF_Pagination_Example.Data.Pagination.Page;
 using EF_Pagination_Example.Model;
+using EF_Pagination_Example.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -20,7 +21,7 @@ namespace EF_Pagination_Example.Business.Services.Admin
             _roleManager = roleManager;
         }
 
-        public async Task<Page<IdentityRole>> GetRolesAsync(RolePage rolePage, CancellationToken cancellationToken)
+        public async Task<Page<PermissionsViewModel>> GetRolesAsync(RolePage rolePage, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -39,7 +40,14 @@ namespace EF_Pagination_Example.Business.Services.Admin
                 .CountAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            return new Page<IdentityRole>(total, roles, rolePage);
+            var permissionsList = new List<PermissionsViewModel>();
+            foreach (var role in roles)
+            {
+                var claims = (await _roleManager.GetClaimsAsync(role).ConfigureAwait(false)).ToList();
+                permissionsList.Add(new PermissionsViewModel(role, claims));
+            }
+
+            return new Page<PermissionsViewModel>(total, permissionsList, rolePage);
         }
 
         private static void ListApplyWhereRole(RolePage rolePage, ref IQueryable<IdentityRole> queryData)

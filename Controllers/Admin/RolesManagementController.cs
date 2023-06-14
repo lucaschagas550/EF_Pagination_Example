@@ -2,8 +2,8 @@
 using EF_Pagination_Example.Communication;
 using EF_Pagination_Example.Data.Pagination.Base;
 using EF_Pagination_Example.Data.Pagination.Page;
+using EF_Pagination_Example.ViewModels;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EF_Pagination_Example.Controllers.Admin
@@ -25,7 +25,7 @@ namespace EF_Pagination_Example.Controllers.Admin
         [HttpGet("Get")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Page<IdentityRole>>> Get([FromQuery] RolePage pagination) =>
+        public async Task<ActionResult<Page<PermissionsViewModel>>> Get([FromQuery] RolePage pagination) =>
             CustomResponse(await _rolesManagementService.GetRolesAsync(pagination, CancellationToken.None).ConfigureAwait(false));
     }
 }
