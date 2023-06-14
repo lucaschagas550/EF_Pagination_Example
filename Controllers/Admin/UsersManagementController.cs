@@ -6,25 +6,30 @@ using EF_Pagination_Example.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
-namespace EF_Pagination_Example.Controllers
+namespace EF_Pagination_Example.Controllers.Admin
 {
     [Route("[controller]")]
     [Authorize(Roles = "Admin")]
-    public class AdminController : MainController
+    public class UsersManagementController : MainController
     {
         private readonly IAdminService _adminService;
 
-        public AdminController(INotifier notifier, IAspNetUser appNetUser, IAdminService adminService) : base(notifier, appNetUser)
+        public UsersManagementController(INotifier notifier, IAspNetUser appNetUser, IAdminService adminService) : base(notifier, appNetUser)
         {
             _adminService = adminService;
         }
 
-        [HttpGet("Get/Users")]
+        [HttpGet("Get")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Page<UserViewModel>>> Get([FromQuery] UserPage pagination) =>
+        public async Task<ActionResult<Page<UsersListViewModel>>> Get([FromQuery] UserPage pagination) =>
             CustomResponse(await _adminService.GetUserAsync(pagination, CancellationToken.None).ConfigureAwait(false));
 
+        [HttpGet("GetById/{id:guid}")]
+        [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<UserViewModel>> GetById(Guid id) =>
+            CustomResponse(await _adminService.GetByIdAsync(id.ToString(), CancellationToken.None).ConfigureAwait(false));
 
     }
 }

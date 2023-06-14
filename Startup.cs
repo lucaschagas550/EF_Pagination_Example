@@ -1,6 +1,7 @@
 ﻿using EF_Pagination_Example.Business.Interfaces;
 using EF_Pagination_Example.Business.Notifications;
 using EF_Pagination_Example.Business.Services;
+using EF_Pagination_Example.Business.Services.Admin;
 using EF_Pagination_Example.Configuration;
 using EF_Pagination_Example.Data;
 using EF_Pagination_Example.Data.Repositories.DataAccess;
@@ -51,7 +52,7 @@ namespace EF_Pagination_Example
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IInitialUserService, InitialUserService>();
             services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IAdminService, AdminService>();
+            services.AddScoped<IAdminService, UsersManagementService>();
         }
 
         public static async Task Configure(WebApplication app)

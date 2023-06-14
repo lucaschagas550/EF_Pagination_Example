@@ -5,10 +5,11 @@ using EF_Pagination_Example.Model;
 using EF_Pagination_Example.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Threading;
 
-namespace EF_Pagination_Example.Business.Services
+namespace EF_Pagination_Example.Business.Services.Admin
 {
-    public class AdminService : BaseService, IAdminService
+    public class UsersManagementService : BaseService, IAdminService
     {
         private const int LessOne = 1;
 
@@ -16,7 +17,7 @@ namespace EF_Pagination_Example.Business.Services
         private readonly UserManager<AppUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public AdminService(
+        public UsersManagementService(
             INotifier notifier,
             SignInManager<AppUser> signInManager,
             UserManager<AppUser> userManager,
@@ -27,7 +28,7 @@ namespace EF_Pagination_Example.Business.Services
             _roleManager = roleManager;
         }
 
-        public async Task<Page<UserViewModel>> GetUserAsync(UserPage userPage, CancellationToken cancellationToken)
+        public async Task<Page<UsersListViewModel>> GetUserAsync(UserPage userPage, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -41,25 +42,40 @@ namespace EF_Pagination_Example.Business.Services
                 .Take(userPage.Size)
                 .ToListAsync(cancellationToken)
                 .ConfigureAwait(false);
-            
+
             var total = await queryData
                 .CountAsync(cancellationToken)
                 .ConfigureAwait(false);
 
-            var usersWithRolesAndClaims = new List<UserViewModel>();
+            var usersWithRolesAndClaims = new List<UsersListViewModel>();
             foreach (var user in users)
             {
                 var roles = (await _userManager.GetRolesAsync(user).ConfigureAwait(false)).ToList();
                 var claims = (await _userManager.GetClaimsAsync(user).ConfigureAwait(false)).ToList();
-                usersWithRolesAndClaims.Add (new UserViewModel(user.Id, user.UserName ?? "", user.Email ?? "", roles, claims));
+                usersWithRolesAndClaims.Add(new UsersListViewModel(user.Id, user.UserName ?? "", user.Email ?? "", roles, claims));
             }
 
-            return new Page<UserViewModel>(total, usersWithRolesAndClaims, userPage);
+            return new Page<UsersListViewModel>(total, usersWithRolesAndClaims, userPage);
+        }
+
+        public async Task<UserViewModel> GetByIdAsync(string userId, CancellationToken cancellationToken)
+        {
+            cancellationToken.ThrowIfCancellationRequested();   
+
+            var user = await _userManager.FindByIdAsync(userId).ConfigureAwait(false);
+
+            if (user is null)
+                return Notify("User not found.", new UserViewModel());
+
+            var roles = (await _userManager.GetRolesAsync(user).ConfigureAwait(false)).ToList();
+            var claims = (await _userManager.GetClaimsAsync(user).ConfigureAwait(false)).ToList();
+
+            return new UserViewModel(user, roles, claims);
         }
 
         private static void ListApplyWhereUser(UserPage userPage, ref IQueryable<AppUser> queryData)
         {
-            if (!string.IsNullOrWhiteSpace(userPage.Search)) queryData = queryData.Where(c =>  c.Email.ToUpper().Contains(userPage.Search.ToUpper()));
+            if (!string.IsNullOrWhiteSpace(userPage.Search)) queryData = queryData.Where(c => c.Email.ToUpper().Contains(userPage.Search.ToUpper()));
             if (!string.IsNullOrWhiteSpace(userPage.UserName)) queryData = queryData.Where(c => c.UserName.ToUpper().Equals(userPage.UserName.ToUpper()));
             if (!string.IsNullOrWhiteSpace(userPage.Email)) queryData = queryData.Where(o => o.Email.ToUpper().Equals(userPage.Email.ToUpper()));
         }
