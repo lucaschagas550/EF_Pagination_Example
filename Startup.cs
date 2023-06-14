@@ -49,10 +49,12 @@ namespace EF_Pagination_Example
             services.AddScoped<INotifier, Notifier>();
             services.AddScoped<IAspNetUser, AspNetUser>();
             
-            services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IInitialUserService, InitialUserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IAdminService, UsersManagementService>();
+            services.AddScoped<IRolesManagementService, RolesManagementService>();
+            
+            services.AddScoped<ICategoryService, CategoryService>();
         }
 
         public static async Task Configure(WebApplication app)

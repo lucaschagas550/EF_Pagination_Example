@@ -6,7 +6,7 @@ namespace EF_Pagination_Example.Business.Interfaces
 {
     public interface IAdminService
     {
-        Task<Page<UsersViewModel>> GetUserAsync(UserPage userPage, CancellationToken cancellationToken);
+        Task<Page<UsersListViewModel>> GetUserAsync(UserPage userPage, CancellationToken cancellationToken);
         Task<UserViewModel> GetByIdAsync(string userId, CancellationToken cancellationToken);
     }
 }
