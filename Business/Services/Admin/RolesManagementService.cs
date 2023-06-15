@@ -1,7 +1,6 @@
 ﻿using EF_Pagination_Example.Business.Interfaces;
 using EF_Pagination_Example.Data.Pagination.Base;
 using EF_Pagination_Example.Data.Pagination.Page;
-using EF_Pagination_Example.Model;
 using EF_Pagination_Example.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -23,31 +22,61 @@ namespace EF_Pagination_Example.Business.Services.Admin
 
         public async Task<Page<PermissionsViewModel>> GetRolesAsync(RolePage rolePage, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
-
-            var queryData = _roleManager.Roles.AsQueryable();
-            ListApplyWhereRole(rolePage, ref queryData);
-            ListApplyOrderByRole(rolePage, ref queryData);
-
-            var roles = await queryData
-                .AsNoTracking()
-                .Skip((rolePage.Page - LessOne) * rolePage.Size)
-                .Take(rolePage.Size)
-                .ToListAsync(cancellationToken)
-                .ConfigureAwait(false);
-
-            var total = await queryData
-                .CountAsync(cancellationToken)
-                .ConfigureAwait(false);
-
-            var permissionsList = new List<PermissionsViewModel>();
-            foreach (var role in roles)
+            try
             {
-                var claims = (await _roleManager.GetClaimsAsync(role).ConfigureAwait(false)).ToList();
-                permissionsList.Add(new PermissionsViewModel(role, claims));
-            }
+                cancellationToken.ThrowIfCancellationRequested();
 
-            return new Page<PermissionsViewModel>(total, permissionsList, rolePage);
+                var queryData = _roleManager.Roles.AsQueryable();
+                ListApplyWhereRole(rolePage, ref queryData);
+                ListApplyOrderByRole(rolePage, ref queryData);
+
+                var roles = await queryData
+                    .AsNoTracking()
+                    .Skip((rolePage.Page - LessOne) * rolePage.Size)
+                    .Take(rolePage.Size)
+                    .ToListAsync(cancellationToken)
+                    .ConfigureAwait(false);
+
+                var total = await queryData
+                    .CountAsync(cancellationToken)
+                    .ConfigureAwait(false);
+
+                var permissionsList = new List<PermissionsViewModel>();
+                foreach (var role in roles)
+                {
+                    var claims = (await _roleManager.GetClaimsAsync(role).ConfigureAwait(false)).ToList();
+                    permissionsList.Add(new PermissionsViewModel(role, claims));
+                }
+
+                return new Page<PermissionsViewModel>(total, permissionsList, rolePage);
+            }
+            catch (Exception exception)
+            {
+                throw new ApplicationException(exception.Message);
+            }
+        }
+
+        public async Task<IdentityResult> CreateRoleAsync(string name, CancellationToken cancellationToken)
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                if (await _roleManager.RoleExistsAsync(name).ConfigureAwait(false))
+                    return Notify("Role already exists.", new IdentityResult());
+
+                var role = new IdentityRole
+                {
+                    Name = name,
+                    NormalizedName = name.ToUpper(),
+                };
+
+                return await _roleManager.CreateAsync(role).ConfigureAwait(false);
+            }
+            catch (Exception exception)
+            {
+                throw new ApplicationException(exception.Message);
+            }
         }
 
         private static void ListApplyWhereRole(RolePage rolePage, ref IQueryable<IdentityRole> queryData)
