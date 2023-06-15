@@ -12,8 +12,8 @@ namespace EF_Pagination_Example.ViewModels
 
         public PermissionsViewModel(IdentityRole role, List<Claim> claims)
         {
-            Role=role;
-            Claims=claims;
+            Role = role;
+            Claims = claims;
         }
     }
 }

@@ -11,33 +11,44 @@ namespace EF_Pagination_Example.Controllers.Admin
 {
     [Route("[controller]")]
     [Authorize(Roles = "Admin")]
-    public class RolesManagementController : MainController
+    public class PermissionsManagementController : MainController
     {
-        private readonly IRolesManagementService _rolesManagementService;
+        private readonly IPermissionsManagementService _rolesManagementService;
 
-        public RolesManagementController(
+        public PermissionsManagementController(
             INotifier notifier,
             IAspNetUser aspNetUser,
-            IRolesManagementService rolesManagementService) : base(notifier, aspNetUser)
+            IPermissionsManagementService rolesManagementService) : base(notifier, aspNetUser)
         {
             _rolesManagementService = rolesManagementService;
         }
 
-        [HttpGet("Get")]
+        [HttpGet("Role")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Page<PermissionsViewModel>>> Get([FromQuery] RolePage pagination) =>
             CustomResponse(await _rolesManagementService.GetRolesAsync(pagination, CancellationToken.None).ConfigureAwait(false));
 
-        [HttpPost()]
+        [HttpPost("Role")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IdentityResult>> Post([FromBody] string name)
+        public async Task<ActionResult<IdentityResult>> CreateRole([FromBody] string name)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);
 
             return CustomResponse(await _rolesManagementService.CreateRoleAsync(name, CancellationToken.None).ConfigureAwait(false));
+        }
+
+        [HttpPost("Claim")]
+        [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IdentityResult>> CreateClaim(ClaimCreateViewModel claimCreateViewModel)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            return CustomResponse(await _rolesManagementService.CreateClaimAsync(claimCreateViewModel, CancellationToken.None).ConfigureAwait(false));
         }
     }
 }

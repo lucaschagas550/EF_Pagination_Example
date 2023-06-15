@@ -5,9 +5,10 @@ using Microsoft.AspNetCore.Identity;
 
 namespace EF_Pagination_Example.Business.Interfaces
 {
-    public interface IRolesManagementService
+    public interface IPermissionsManagementService
     {
         Task<Page<PermissionsViewModel>> GetRolesAsync(RolePage rolePage, CancellationToken cancellationToken);
         Task<IdentityResult> CreateRoleAsync(string name, CancellationToken cancellationToken);
+        Task<IdentityResult> CreateClaimAsync(ClaimCreateViewModel claimCreateViewModel, CancellationToken cancellationToken);
     }
 }

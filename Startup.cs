@@ -52,7 +52,7 @@ namespace EF_Pagination_Example
             services.AddScoped<IInitialUserService, InitialUserService>();
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IAdminService, UsersManagementService>();
-            services.AddScoped<IRolesManagementService, RolesManagementService>();
+            services.AddScoped<IPermissionsManagementService, PermissionsManagementService>();
             
             services.AddScoped<ICategoryService, CategoryService>();
         }

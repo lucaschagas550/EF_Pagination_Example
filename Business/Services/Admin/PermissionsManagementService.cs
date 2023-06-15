@@ -4,16 +4,17 @@ using EF_Pagination_Example.Data.Pagination.Page;
 using EF_Pagination_Example.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace EF_Pagination_Example.Business.Services.Admin
 {
-    public class RolesManagementService : BaseService, IRolesManagementService
+    public class PermissionsManagementService : BaseService, IPermissionsManagementService
     {
         private const int LessOne = 1;
 
         private readonly RoleManager<IdentityRole> _roleManager;
 
-        public RolesManagementService(
+        public PermissionsManagementService(
             INotifier notifier,
             RoleManager<IdentityRole> roleManager) : base(notifier)
         {
@@ -72,6 +73,38 @@ namespace EF_Pagination_Example.Business.Services.Admin
                 };
 
                 return await _roleManager.CreateAsync(role).ConfigureAwait(false);
+            }
+            catch (Exception exception)
+            {
+                throw new ApplicationException(exception.Message);
+            }
+        }
+
+        public async Task<IdentityResult> CreateClaimAsync(ClaimCreateViewModel claimCreateViewModel ,CancellationToken cancellationToken)
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                var newClaim = new Claim(claimCreateViewModel.Type, claimCreateViewModel.Value);
+
+                var role = await _roleManager
+                    .Roles
+                    .FirstOrDefaultAsync(r => r.Id.Equals(claimCreateViewModel.Role.Id), cancellationToken)
+                    .ConfigureAwait(false);
+
+                if (role is null)
+                    return Notify("Role not found.", new IdentityResult());
+
+                var claims = (await _roleManager.GetClaimsAsync(role).ConfigureAwait(false)).ToList();
+
+                var result = claims
+                    .Where(c => c.Type.Contains(newClaim.Type) 
+                    && c.Value.Contains(newClaim.Value));
+
+                if(result.Any())
+                    return Notify("Claim already registered.", new IdentityResult());
+
+                return await _roleManager.AddClaimAsync(role, newClaim);
             }
             catch (Exception exception)
             {
