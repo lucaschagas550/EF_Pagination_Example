@@ -14,6 +14,13 @@ namespace EF_Pagination_Example.Business.Services
 {
     public class AuthService : BaseService, IAuthService
     {
+        private readonly string ROLE = "User";
+        private readonly string CLAIM_TYPE = "User";
+        private readonly string CLAIM_VALUE_READ = "Read";
+        private readonly string CLAIM_VALUE_INSERT = "Insert";
+        private readonly string CLAIM_VALUE_UPDATE = "Update";
+        private readonly string CLAIM_VALUE_DELETE = "Delete";
+        
         private readonly ILogger<AuthService> _logger;
         private readonly SignInManager<AppUser> _signInManager;
         private readonly UserManager<AppUser> _userManager;
@@ -78,6 +85,44 @@ namespace EF_Pagination_Example.Business.Services
                 : null;
         }
 
+        public async Task<AppUser> CreateUserAsync(RegisterUserViewModel registerUser, CancellationToken cancellationToken)
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var parts = registerUser.Email.Split("@");
+                var user = new AppUser
+                {
+                    UserName = parts[0],
+                    NormalizedUserName = parts[0].ToUpper(),
+                    Email = registerUser.Email,
+                    NormalizedEmail = registerUser.Email.ToUpper(),
+                };
+
+                var result = await _userManager.CreateAsync(user, registerUser.Password).ConfigureAwait(false);
+
+                if (result.Errors.Any())
+                    return Notify("Could not create user.", new AppUser());
+
+                var claims = new List<Claim>()
+                {
+                    new Claim(CLAIM_TYPE, CLAIM_VALUE_READ),
+                    new Claim(CLAIM_TYPE, CLAIM_VALUE_INSERT),
+                    new Claim(CLAIM_TYPE, CLAIM_VALUE_UPDATE),
+                    new Claim(CLAIM_TYPE, CLAIM_VALUE_DELETE),
+                };
+
+                var roleResult = await _userManager.AddToRoleAsync(user, ROLE).ConfigureAwait(false);
+                var userClaimResult = await _userManager.AddClaimsAsync(user, claims).ConfigureAwait(false);
+                return user;
+            }
+            catch (Exception exception)
+            {
+                return Notify(exception.Message, new AppUser());
+            }
+        }
+
         private async Task<LoginResponseViewModel> GetToken(AppUser user, CancellationToken cancellationToken)
         {
             var claims = await _userManager.GetClaimsAsync(user).ConfigureAwait(false);
@@ -124,7 +169,7 @@ namespace EF_Pagination_Example.Business.Services
             return tokenHandler.WriteToken(token);
         }
 
-        private static LoginResponseViewModel GetResponseToken(string encodedToken, IdentityUser user, IEnumerable<Claim> claims , RefreshToken refreshToken)
+        private static LoginResponseViewModel GetResponseToken(string encodedToken, IdentityUser user, IEnumerable<Claim> claims, RefreshToken refreshToken)
         {
             return new LoginResponseViewModel()
             {

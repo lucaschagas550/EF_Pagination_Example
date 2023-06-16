@@ -10,7 +10,7 @@ namespace EF_Pagination_Example.Controllers
     {
         private readonly IAuthService _authService;
 
-        public AuthController(INotifier notifier, IAspNetUser aspNetUser,IAuthService authService) : base(notifier, aspNetUser) =>
+        public AuthController(INotifier notifier, IAspNetUser aspNetUser, IAuthService authService) : base(notifier, aspNetUser) =>
             _authService = authService;
 
         [HttpPost("Login")]
@@ -44,6 +44,17 @@ namespace EF_Pagination_Example.Controllers
             }
 
             return CustomResponse(await _authService.GenerateJwtAsync(token.Email, CancellationToken.None).ConfigureAwait(false));
+        }
+
+        [HttpPost("Register")]
+        [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> CreateUser(RegisterUserViewModel registerUserViewModel)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            return CustomResponse(await _authService.CreateUserAsync(registerUserViewModel, CancellationToken.None).ConfigureAwait(false));
         }
     }
 }

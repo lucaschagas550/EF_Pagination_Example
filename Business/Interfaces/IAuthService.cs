@@ -8,5 +8,6 @@ namespace EF_Pagination_Example.Business.Interfaces
         Task<LoginResponseViewModel> LoginAsync(LoginRequestViewModel loginRequestViewModel, CancellationToken cancellationToken);
         Task<LoginResponseViewModel> GenerateJwtAsync(string email, CancellationToken cancellationToken);
         Task<RefreshToken?> GetRefreshTokenAsync(Guid refreshToken, CancellationToken cancellationToken);
+        Task<AppUser> CreateUserAsync(RegisterUserViewModel registerUser, CancellationToken cancellationToken);
     }
 }
