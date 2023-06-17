@@ -141,6 +141,37 @@ namespace EF_Pagination_Example.Business.Services.Admin
             }
         }
 
+        public async Task<IdentityResult> AddClaimUserAsync(UserClaimUpdateViewModel userClaimUpdateViewModel, CancellationToken cancellationToken)
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var user = await _userManager
+                    .Users
+                    .FirstOrDefaultAsync(u => u.Id.Equals(userClaimUpdateViewModel.UserId), cancellationToken)
+                    .ConfigureAwait(false);
+
+                if (user is null)
+                    return Notify("User not found.", new IdentityResult());
+
+                var isMemberRole = await _userManager.IsInRoleAsync(user, userClaimUpdateViewModel.RoleName).ConfigureAwait(false);
+                if (isMemberRole == false)
+                    return Notify("User does not belong to this role.", new IdentityResult());
+
+                var claim = new Claim(userClaimUpdateViewModel.Type, userClaimUpdateViewModel.Value);
+                var hasClaim = (await _userManager.GetClaimsAsync(user)).Any(c => c.Type.Equals(claim.Type) && c.Value.Equals(claim.Value));
+                if(hasClaim)
+                    return Notify("User already has this claim for this role.", new IdentityResult());
+
+                return await _userManager.AddClaimAsync(user, claim);
+            }
+            catch (Exception exception)
+            {
+                return Notify(exception.Message, new IdentityResult());
+            }
+        }
+
         private static void ListApplyWhereRole(RolePage rolePage, ref IQueryable<IdentityRole> queryData)
         {
             if (!string.IsNullOrWhiteSpace(rolePage.Search)) queryData = queryData.Where(c => c.Name.ToUpper().Contains(rolePage.Search.ToUpper()));

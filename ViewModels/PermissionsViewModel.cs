@@ -5,7 +5,7 @@ namespace EF_Pagination_Example.ViewModels
 {
     public class PermissionsViewModel
     {
-        public IdentityRole Role { get; set; }
+        public IdentityRole Role { get; set; } = new IdentityRole();
         public List<Claim> Claims { get; set; } = new List<Claim>();
 
         public PermissionsViewModel() { }

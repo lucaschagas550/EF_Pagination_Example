@@ -61,5 +61,16 @@ namespace EF_Pagination_Example.Controllers.Admin
 
             return CustomResponse(await _rolesManagementService.CreateClaimAsync(claimCreateViewModel, CancellationToken.None).ConfigureAwait(false));
         }
+
+        [HttpPost("AddClaimUser")]
+        [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IdentityResult>> AddClaimUser(UserClaimUpdateViewModel userClaimUpdateViewModel)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            return CustomResponse(await _rolesManagementService.AddClaimUserAsync(userClaimUpdateViewModel, CancellationToken.None).ConfigureAwait(false));
+        }
     }
 }

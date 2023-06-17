@@ -5,7 +5,6 @@ using EF_Pagination_Example.Model;
 using EF_Pagination_Example.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using System.Threading;
 
 namespace EF_Pagination_Example.Business.Services.Admin
 {
@@ -60,7 +59,7 @@ namespace EF_Pagination_Example.Business.Services.Admin
 
         public async Task<UserViewModel> GetByIdAsync(string userId, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();   
+            cancellationToken.ThrowIfCancellationRequested();
 
             var user = await _userManager.FindByIdAsync(userId).ConfigureAwait(false);
 
