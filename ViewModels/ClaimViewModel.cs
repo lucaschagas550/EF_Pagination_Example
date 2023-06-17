@@ -9,8 +9,8 @@
 
         public ClaimViewModel(string value, string type)
         {
-            Value=value;
-            Type=type;
+            Value = value;
+            Type = type;
         }
     }
 }

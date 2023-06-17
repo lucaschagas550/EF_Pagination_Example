@@ -72,5 +72,16 @@ namespace EF_Pagination_Example.Controllers.Admin
 
             return CustomResponse(await _rolesManagementService.AddClaimUserAsync(userClaimUpdateViewModel, CancellationToken.None).ConfigureAwait(false));
         }
+
+        [HttpPut("ClaimRevoked")]
+        [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IdentityResult>> ClaimRevokedAsync(UserClaimRevokedViewModel userClaimRevokedViewModel)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            return CustomResponse(await _rolesManagementService.ClaimRevokedAsync(userClaimRevokedViewModel, CancellationToken.None).ConfigureAwait(false));
+        }
     }
 }
