@@ -1,6 +1,7 @@
 ﻿using EF_Pagination_Example.Business.Interfaces;
 using EF_Pagination_Example.Data.Pagination.Base;
 using EF_Pagination_Example.Data.Pagination.Page;
+using EF_Pagination_Example.Model;
 using EF_Pagination_Example.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,15 +11,18 @@ namespace EF_Pagination_Example.Business.Services.Admin
 {
     public class PermissionsManagementService : BaseService, IPermissionsManagementService
     {
-        private const int LessOne = 1;
+        private const int LESS_ONE = 1;
 
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<AppUser> _userManager;
 
         public PermissionsManagementService(
             INotifier notifier,
-            RoleManager<IdentityRole> roleManager) : base(notifier)
+            RoleManager<IdentityRole> roleManager,
+            UserManager<AppUser> userManager) : base(notifier)
         {
             _roleManager = roleManager;
+            _userManager = userManager;
         }
 
         public async Task<Page<PermissionsViewModel>> GetRolesAsync(RolePage rolePage, CancellationToken cancellationToken)
@@ -33,7 +37,7 @@ namespace EF_Pagination_Example.Business.Services.Admin
 
                 var roles = await queryData
                     .AsNoTracking()
-                    .Skip((rolePage.Page - LessOne) * rolePage.Size)
+                    .Skip((rolePage.Page - LESS_ONE) * rolePage.Size)
                     .Take(rolePage.Size)
                     .ToListAsync(cancellationToken)
                     .ConfigureAwait(false);
@@ -53,7 +57,7 @@ namespace EF_Pagination_Example.Business.Services.Admin
             }
             catch (Exception exception)
             {
-                throw new ApplicationException(exception.Message);
+                return Notify(exception.Message, new Page<PermissionsViewModel>());
             }
         }
 
@@ -76,11 +80,11 @@ namespace EF_Pagination_Example.Business.Services.Admin
             }
             catch (Exception exception)
             {
-                throw new ApplicationException(exception.Message);
+                return Notify(exception.Message, new IdentityResult());
             }
         }
 
-        public async Task<IdentityResult> CreateClaimAsync(ClaimCreateViewModel claimCreateViewModel ,CancellationToken cancellationToken)
+        public async Task<IdentityResult> CreateClaimAsync(ClaimCreateViewModel claimCreateViewModel, CancellationToken cancellationToken)
         {
             try
             {
@@ -98,17 +102,42 @@ namespace EF_Pagination_Example.Business.Services.Admin
                 var claims = (await _roleManager.GetClaimsAsync(role).ConfigureAwait(false)).ToList();
 
                 var result = claims
-                    .Where(c => c.Type.Contains(newClaim.Type) 
+                    .Where(c => c.Type.Contains(newClaim.Type)
                     && c.Value.Contains(newClaim.Value));
 
-                if(result.Any())
+                if (result.Any())
                     return Notify("Claim already registered.", new IdentityResult());
 
                 return await _roleManager.AddClaimAsync(role, newClaim);
             }
             catch (Exception exception)
             {
-                throw new ApplicationException(exception.Message);
+                return Notify(exception.Message, new IdentityResult());
+            }
+        }
+
+        public async Task<IdentityResult> AddRoleUserAsync(UserRoleUpdateViewModel userRoleUpdateViewModel, CancellationToken cancellationToken)
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var user = await _userManager
+                    .Users
+                    .FirstOrDefaultAsync(u => u.Id.Equals(userRoleUpdateViewModel.UserId), cancellationToken)
+                    .ConfigureAwait(false);
+
+                if (user is null)
+                    return Notify("User not found.", new IdentityResult());
+
+                if (await _roleManager.RoleExistsAsync(userRoleUpdateViewModel.RoleName).ConfigureAwait(false))
+                    return await _userManager.AddToRoleAsync(user, userRoleUpdateViewModel.RoleName).ConfigureAwait(false);
+
+                return Notify("Role does not exist.", new IdentityResult());
+            }
+            catch (Exception exception)
+            {
+                return Notify(exception.Message, new IdentityResult());
             }
         }
 

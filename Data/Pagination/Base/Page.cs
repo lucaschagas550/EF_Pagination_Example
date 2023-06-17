@@ -1,6 +1,4 @@
-﻿using Microsoft.AspNetCore.Http.HttpResults;
-
-namespace EF_Pagination_Example.Data.Pagination.Base
+﻿namespace EF_Pagination_Example.Data.Pagination.Base
 {
     public class Page<T>
     {
@@ -16,6 +14,8 @@ namespace EF_Pagination_Example.Data.Pagination.Base
         public bool HasNext { get; }
         public bool IsFirst { get; }
         public bool IsLast { get; }
+
+        public Page() { }
 
         public Page(int total, IEnumerable<T> content, Pageable pageable)
         {

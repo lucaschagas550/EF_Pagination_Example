@@ -21,7 +21,7 @@ namespace EF_Pagination_Example.Controllers
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Page<Category>>> Get([FromQuery] CategoryPage pagination) =>
-             CustomResponse(await _categoryService.Get(pagination, CancellationToken.None).ConfigureAwait(false));    
+            CustomResponse(await _categoryService.Get(pagination, CancellationToken.None).ConfigureAwait(false));
 
         [HttpGet("{id:guid}")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
@@ -49,7 +49,7 @@ namespace EF_Pagination_Example.Controllers
         [HttpDelete("{category}")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> Delete(Category category) 
+        public async Task<ActionResult> Delete(Category category)
         {
             await _categoryService.Delete(category, CancellationToken.None).ConfigureAwait(false);
             return CustomResponse();

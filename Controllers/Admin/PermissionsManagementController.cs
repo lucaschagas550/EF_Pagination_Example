@@ -40,6 +40,17 @@ namespace EF_Pagination_Example.Controllers.Admin
             return CustomResponse(await _rolesManagementService.CreateRoleAsync(name, CancellationToken.None).ConfigureAwait(false));
         }
 
+        [HttpPost("AddRoleUser")]
+        [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IdentityResult>> AddRoleUser(UserRoleUpdateViewModel userRoleUpdateViewModel)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            return CustomResponse(await _rolesManagementService.AddRoleUserAsync(userRoleUpdateViewModel, CancellationToken.None).ConfigureAwait(false));
+        }
+
         [HttpPost("Claim")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
