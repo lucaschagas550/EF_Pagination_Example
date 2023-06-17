@@ -25,6 +25,14 @@ namespace EF_Pagination_Example.Business.Services
             return item;
         }
 
+        protected T Notify<T>(List<string> messages, T item) where T : class
+        {
+            foreach(var message in messages)
+                _notifier.Handle(new Notification(message));
+
+            return item;
+        }
+
         protected StringContent SerializeObject(object data) =>
             new StringContent(
                 JsonSerializer.Serialize(data),

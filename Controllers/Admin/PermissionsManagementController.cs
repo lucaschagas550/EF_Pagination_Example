@@ -51,6 +51,17 @@ namespace EF_Pagination_Example.Controllers.Admin
             return CustomResponse(await _rolesManagementService.AddRoleUserAsync(userRoleUpdateViewModel, CancellationToken.None).ConfigureAwait(false));
         }
 
+        [HttpPut("RoleRevoked")]
+        [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IdentityResult>> RoleRevoked(UserRoleRevokedViewModel userRoleRevokedViewModel)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            return CustomResponse(await _rolesManagementService.RoleRevokedAsync(userRoleRevokedViewModel, CancellationToken.None).ConfigureAwait(false));
+        }
+
         [HttpPost("Claim")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
@@ -76,7 +87,7 @@ namespace EF_Pagination_Example.Controllers.Admin
         [HttpPut("ClaimRevoked")]
         [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
         [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<IdentityResult>> ClaimRevokedAsync(UserClaimRevokedViewModel userClaimRevokedViewModel)
+        public async Task<ActionResult<IdentityResult>> ClaimRevoked(UserClaimRevokedViewModel userClaimRevokedViewModel)
         {
             if (!ModelState.IsValid)
                 return CustomResponse(ModelState);

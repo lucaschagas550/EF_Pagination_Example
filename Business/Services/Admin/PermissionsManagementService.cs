@@ -174,23 +174,63 @@ namespace EF_Pagination_Example.Business.Services.Admin
 
         public async Task<IdentityResult> ClaimRevokedAsync(UserClaimRevokedViewModel userClaimRevokedViewModel, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
 
-            var user = await _userManager
-                .Users
-                .FirstOrDefaultAsync(u => u.Id.Equals(userClaimRevokedViewModel.UserId), cancellationToken)
-                .ConfigureAwait(false);
+                var user = await _userManager
+                    .Users
+                    .FirstOrDefaultAsync(u => u.Id.Equals(userClaimRevokedViewModel.UserId), cancellationToken)
+                    .ConfigureAwait(false);
 
-            if (user is null)
-                return Notify("User not found.", new IdentityResult());
+                if (user is null)
+                    return Notify("User not found.", new IdentityResult());
 
-            var userClaims = await _userManager.GetClaimsAsync(user).ConfigureAwait(false);
-            var claim = new Claim(userClaimRevokedViewModel.Type, userClaimRevokedViewModel.Value);
+                var userClaims = await _userManager.GetClaimsAsync(user).ConfigureAwait(false);
+                var claim = new Claim(userClaimRevokedViewModel.Type, userClaimRevokedViewModel.Value);
 
-            if (userClaims.Any(c => c.Type.Equals(claim.Type) && c.Value.Equals(claim.Value)))
-                return await _userManager.RemoveClaimAsync(user, claim).ConfigureAwait(false);
+                if (userClaims.Any(c => c.Type.Equals(claim.Type) && c.Value.Equals(claim.Value)))
+                    return await _userManager.RemoveClaimAsync(user, claim).ConfigureAwait(false);
 
-            return Notify("User does not have the claim.", new IdentityResult());
+                return Notify("User does not have the claim.", new IdentityResult());
+            }
+            catch (Exception exception)
+            {
+                return Notify(exception.Message, new IdentityResult());
+            }
+        }
+
+        public async Task<IdentityResult> RoleRevokedAsync(UserRoleRevokedViewModel userRoleRevokedViewModel, CancellationToken cancellationToken)
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var user = await _userManager
+                    .Users
+                    .FirstOrDefaultAsync(u => u.Id.Equals(userRoleRevokedViewModel.UserId), cancellationToken)
+                    .ConfigureAwait(false);
+
+                if (user is null)
+                    return Notify("User not found.", new IdentityResult());
+
+                var roleResult = await _userManager.RemoveFromRoleAsync(user, userRoleRevokedViewModel.RoleName).ConfigureAwait(false);
+                if (roleResult.Errors.Any())
+                {
+                    foreach (var error in roleResult.Errors)
+                        Notify(error.Description);
+                        
+                    return new IdentityResult();
+                }
+
+                var claimsUser = await _userManager.GetClaimsAsync(user);
+                var revokedClaim = claimsUser.Where(c => c.Type.Equals(userRoleRevokedViewModel.RoleName));
+                return await _userManager.RemoveClaimsAsync(user, revokedClaim);
+            }
+            catch (Exception exception)
+            {
+                return Notify(exception.Message, new IdentityResult());
+            }
         }
 
         private static void ListApplyWhereRole(RolePage rolePage, ref IQueryable<IdentityRole> queryData)

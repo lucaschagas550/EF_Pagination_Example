@@ -10,6 +10,7 @@ namespace EF_Pagination_Example.Business.Interfaces
         Task<Page<PermissionsViewModel>> GetRolesAsync(RolePage rolePage, CancellationToken cancellationToken);
         Task<IdentityResult> CreateRoleAsync(string name, CancellationToken cancellationToken);
         Task<IdentityResult> AddRoleUserAsync(UserRoleUpdateViewModel userRoleUpdateViewModel, CancellationToken cancellationToken);
+        Task<IdentityResult> RoleRevokedAsync(UserRoleRevokedViewModel userRoleRevokedViewModel, CancellationToken cancellationToken);
         Task<IdentityResult> CreateClaimAsync(ClaimCreateViewModel claimCreateViewModel, CancellationToken cancellationToken);
         Task<IdentityResult> AddClaimUserAsync(UserClaimUpdateViewModel userClaimUpdateViewModel, CancellationToken cancellationToken);
         Task<IdentityResult> ClaimRevokedAsync(UserClaimRevokedViewModel userClaimRevokedViewModel, CancellationToken cancellationToken);
