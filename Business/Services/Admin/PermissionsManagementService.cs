@@ -219,13 +219,43 @@ namespace EF_Pagination_Example.Business.Services.Admin
                 {
                     foreach (var error in roleResult.Errors)
                         Notify(error.Description);
-                        
+
                     return new IdentityResult();
                 }
 
                 var claimsUser = await _userManager.GetClaimsAsync(user);
                 var revokedClaim = claimsUser.Where(c => c.Type.Equals(userRoleRevokedViewModel.RoleName));
                 return await _userManager.RemoveClaimsAsync(user, revokedClaim);
+            }
+            catch (Exception exception)
+            {
+                return Notify(exception.Message, new IdentityResult());
+            }
+        }
+
+        public async Task<IdentityResult> DeleteClaimAsync(ClaimDeleteViewModel claimDeleteViewModel, CancellationToken cancellationToken)
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Id.Equals(claimDeleteViewModel.RoleId), cancellationToken).ConfigureAwait(false);
+                if (role is null)
+                    return Notify("Role not found.", new IdentityResult());
+
+                var claim = new Claim(claimDeleteViewModel.Type, claimDeleteViewModel.Value);
+                var users = await _userManager.Users.AsNoTracking().ToListAsync(cancellationToken).ConfigureAwait(false);
+
+                foreach (var user in users)
+                {
+                    var userClaim = await _userManager.GetClaimsAsync(user).ConfigureAwait(false);
+                    var removeClaim = userClaim.FirstOrDefault(c => c.Type.Equals(claim.Type) && c.Value.Equals(claim.Value));
+
+                    if (removeClaim is not null)
+                        await _userManager.RemoveClaimAsync(user, removeClaim).ConfigureAwait(false);
+                }
+
+                return await _roleManager.RemoveClaimAsync(role, claim).ConfigureAwait(false);
             }
             catch (Exception exception)
             {

@@ -14,5 +14,6 @@ namespace EF_Pagination_Example.Business.Interfaces
         Task<IdentityResult> CreateClaimAsync(ClaimCreateViewModel claimCreateViewModel, CancellationToken cancellationToken);
         Task<IdentityResult> AddClaimUserAsync(UserClaimUpdateViewModel userClaimUpdateViewModel, CancellationToken cancellationToken);
         Task<IdentityResult> ClaimRevokedAsync(UserClaimRevokedViewModel userClaimRevokedViewModel, CancellationToken cancellationToken);
+        Task<IdentityResult> DeleteClaimAsync(ClaimDeleteViewModel claimDeleteViewModel, CancellationToken cancellationToken);
     }
 }
