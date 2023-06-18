@@ -244,7 +244,7 @@ namespace EF_Pagination_Example.Business.Services.Admin
                     return Notify("Role not found.", new IdentityResult());
 
                 var claim = new Claim(claimDeleteViewModel.Type, claimDeleteViewModel.Value);
-                var users = await _userManager.Users.AsNoTracking().ToListAsync(cancellationToken).ConfigureAwait(false);
+                var users = await _userManager.Users.ToListAsync(cancellationToken).ConfigureAwait(false);
 
                 foreach (var user in users)
                 {
