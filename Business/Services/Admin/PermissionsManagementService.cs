@@ -147,6 +147,8 @@ namespace EF_Pagination_Example.Business.Services.Admin
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
+                var claim = new Claim(userClaimUpdateViewModel.Type, userClaimUpdateViewModel.Value);
+                
                 var user = await _userManager
                     .Users
                     .FirstOrDefaultAsync(u => u.Id.Equals(userClaimUpdateViewModel.UserId), cancellationToken)
@@ -155,11 +157,19 @@ namespace EF_Pagination_Example.Business.Services.Admin
                 if (user is null)
                     return Notify("User not found.", new IdentityResult());
 
-                var isMemberRole = await _userManager.IsInRoleAsync(user, userClaimUpdateViewModel.RoleName).ConfigureAwait(false);
+                var role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Id.Equals(userClaimUpdateViewModel.RoleId), cancellationToken).ConfigureAwait(false);
+                if(role is null)
+                    return Notify("Role not found.", new IdentityResult());
+
+                var isMemberRole = await _userManager.IsInRoleAsync(user, role.Name).ConfigureAwait(false);
                 if (isMemberRole == false)
                     return Notify("User does not belong to this role.", new IdentityResult());
 
-                var claim = new Claim(userClaimUpdateViewModel.Type, userClaimUpdateViewModel.Value);
+                var roleClaims = await _roleManager.GetClaimsAsync(role).ConfigureAwait(false);
+                var claimNotExists = !roleClaims.Any(c => c.Type.Equals(claim.Type) && c.Value.Equals(claim.Value));
+                if (claimNotExists)
+                    return Notify("Claim does not exist for the role.", new IdentityResult());
+
                 var hasClaim = (await _userManager.GetClaimsAsync(user)).Any(c => c.Type.Equals(claim.Type) && c.Value.Equals(claim.Value));
                 if (hasClaim)
                     return Notify("User already has this claim for this role.", new IdentityResult());
@@ -256,6 +266,30 @@ namespace EF_Pagination_Example.Business.Services.Admin
                 }
 
                 return await _roleManager.RemoveClaimAsync(role, claim).ConfigureAwait(false);
+            }
+            catch (Exception exception)
+            {
+                return Notify(exception.Message, new IdentityResult());
+            }
+        }
+
+        public async Task<IdentityResult> DeleteRoleAsync(RoleDeleteViewModel roleDeleteViewModel, CancellationToken cancellationToken)
+        {
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+
+                var role = await _roleManager.Roles.FirstOrDefaultAsync(r => r.Id.Equals(roleDeleteViewModel.Id), cancellationToken).ConfigureAwait(false);
+
+                if (role is null)
+                    return Notify("Role not found.", new IdentityResult());
+
+                var claims = await _roleManager.GetClaimsAsync(role).ConfigureAwait(false);
+
+                foreach (var claim in claims)
+                    await DeleteClaimAsync(new ClaimDeleteViewModel(roleDeleteViewModel.Id, claim.Value, claim.Type), cancellationToken).ConfigureAwait(false);
+
+                return await _roleManager.DeleteAsync(role).ConfigureAwait(false);
             }
             catch (Exception exception)
             {

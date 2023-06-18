@@ -3,14 +3,14 @@
     public class UserClaimUpdateViewModel : ClaimViewModel
     {
         public string UserId { get; set; } = null!;
-        public string RoleName { get; set; } = null!;
+        public string RoleId { get; set; } = null!;
 
         public UserClaimUpdateViewModel() { }
 
-        public UserClaimUpdateViewModel(string userId, string roleName, string type, string value) : base(value, type)
+        public UserClaimUpdateViewModel(string userId, string roleId, string type, string value) : base(value, type)
         {
             UserId = userId;
-            RoleName = roleName;
+            RoleId = roleId;
         }
     }
 }

@@ -105,5 +105,16 @@ namespace EF_Pagination_Example.Controllers.Admin
 
             return CustomResponse(await _rolesManagementService.DeleteClaimAsync(claimDeleteViewModel, CancellationToken.None).ConfigureAwait(false));
         }
+
+        [HttpDelete("Role")]
+        [ProducesResponseType(typeof(ResponseSuccess), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ResponseFailure), StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<IdentityResult>> RoleDelete(RoleDeleteViewModel roleDeleteViewModel)
+        {
+            if (!ModelState.IsValid)
+                return CustomResponse(ModelState);
+
+            return CustomResponse(await _rolesManagementService.DeleteRoleAsync(roleDeleteViewModel, CancellationToken.None).ConfigureAwait(false));
+        }
     }
 }
