@@ -12,12 +12,21 @@ namespace EF_Pagination_Example.Model
         [Required]
         public string Description { get; set; } = null!;
 
-        public Category() { }
+        public virtual List<CategoryProduct> CategoryProduct { get; set; }
+
+        public Category()
+        {
+            CategoryProduct = new List<CategoryProduct>();
+        }
 
         public Category(string name, string description)
         {
             Name = name;
             Description = description;
+            CategoryProduct = new List<CategoryProduct>();
         }
+
+        public void SetCategoryId() =>
+            CategoryProduct.Select(c => c.CategoryId = Id);
     }
 }

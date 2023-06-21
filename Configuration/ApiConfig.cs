@@ -1,7 +1,4 @@
-﻿using EF_Pagination_Example.Business.Interfaces;
-using Microsoft.EntityFrameworkCore;
-
-namespace EF_Pagination_Example.Configuration
+﻿namespace EF_Pagination_Example.Configuration
 {
     public static class ApiConfig
     {
@@ -10,7 +7,7 @@ namespace EF_Pagination_Example.Configuration
             services.AddControllers();
             services.AddEndpointsApiExplorer();
 
-            var urlClients = new[]{ "",};
+            var urlClients = new[] { "", };
 
             services.AddCors(options =>
             {
@@ -23,7 +20,7 @@ namespace EF_Pagination_Example.Configuration
             });
         }
 
-        public static async Task UseApiConfiguration(this WebApplication app)
+        public static void UseApiConfiguration(this WebApplication app)
         {
             if (app.Environment.IsDevelopment())
             {
@@ -37,11 +34,6 @@ namespace EF_Pagination_Example.Configuration
             app.UseCors("CorsPolicy");
 
             app.UseAuthConfiguration();
-
-            using var scope = app.Services.CreateScope();
-            var initialUser = scope.ServiceProvider.GetRequiredService<IInitialUserService>();
-            await initialUser.CreateRole();
-            await initialUser.CreateAdmin();
         }
     }
 }

@@ -26,16 +26,9 @@ namespace EF_Pagination_Example
         {
             app.UseSwaggerConfiguration();
 
-            await app.UseApiConfiguration().ConfigureAwait(false);
+            app.UseApiConfiguration();
 
-            #region
-            ///Verificar se existe alguma migracao pendente e aplicar todas ao iniciar a aplicacao
-            //using (var scope = app.Services.CreateScope())
-            //{
-            //    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-            //    dbContext.Database.Migrate();
-            //}
-            #endregion
+            await app.UseEntityFramework().ConfigureAwait(false);
         }
     }
 }
