@@ -39,5 +39,11 @@ namespace EF_Pagination_Example.Configuration
 
             return services;
         }
+
+        public static void UseAuthConfiguration(this WebApplication app)
+        {
+            app.UseAuthentication();
+            app.UseAuthorization();
+        }
     }
 }

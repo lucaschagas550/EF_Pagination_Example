@@ -1,15 +1,4 @@
-﻿using EF_Pagination_Example.Business.Interfaces;
-using EF_Pagination_Example.Business.Notifications;
-using EF_Pagination_Example.Business.Services;
-using EF_Pagination_Example.Business.Services.Admin;
-using EF_Pagination_Example.Configuration;
-using EF_Pagination_Example.Data;
-using EF_Pagination_Example.Data.Repositories.DataAccess;
-using EF_Pagination_Example.Data.Repositories.Interfaces;
-using EF_Pagination_Example.Data.Uow;
-using EF_Pagination_Example.Data.Uow.Interfaces;
-using EF_Pagination_Example.Extensions;
-using Microsoft.EntityFrameworkCore;
+﻿using EF_Pagination_Example.Configuration;
 
 namespace EF_Pagination_Example
 {
@@ -22,63 +11,22 @@ namespace EF_Pagination_Example
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<AppDbContext>(optionsBuilder =>
-                optionsBuilder.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"),
-                    options =>
-                        {
-                            options.EnableRetryOnFailure(
-                                maxRetryCount: 3,
-                                maxRetryDelay: TimeSpan.FromSeconds(10),
-                                errorNumbersToAdd: new List<int> { 4060 });
-                        })
-                .EnableSensitiveDataLogging()
-                .UseLoggerFactory(LoggerFactory.Create(builder => builder.AddConsole())));
+            services.AddApiConfiguration(Configuration);
 
-            services.AddIdentityConfig(Configuration);
+            services.AddDbContextConfig(Configuration);
+
             services.AddJwtConfig(Configuration);
-
-            services.AddControllers();
-            services.AddEndpointsApiExplorer();
 
             services.AddSwaggerConfiguration();
 
-            services.AddScoped<AppDbContext>();
-            services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
-            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
-
-            services.AddScoped<INotifier, Notifier>();
-            services.AddScoped<IAspNetUser, AspNetUser>();
-            
-            services.AddScoped<IInitialUserService, InitialUserService>();
-            services.AddScoped<IAuthService, AuthService>();
-            services.AddScoped<IAdminService, UsersManagementService>();
-            services.AddScoped<IPermissionsManagementService, PermissionsManagementService>();
-            
-            services.AddScoped<ICategoryService, CategoryService>();
+            services.RegisterServices();
         }
 
         public static async Task Configure(WebApplication app)
         {
             app.UseSwaggerConfiguration();
 
-            if (app.Environment.IsDevelopment())
-            {
-            }
-
-            app.UseHttpsRedirection();
-
-            app.UseAuthentication();
-            app.UseAuthorization();
-
-            app.MapControllers();
-
-            using (var scope = app.Services.CreateScope())
-            {
-                var initialUser = scope.ServiceProvider.GetRequiredService<IInitialUserService>();
-                await initialUser.CreateRole();
-                await initialUser.CreateAdmin();
-            }
+            await app.UseApiConfiguration().ConfigureAwait(false);
 
             #region
             ///Verificar se existe alguma migracao pendente e aplicar todas ao iniciar a aplicacao
