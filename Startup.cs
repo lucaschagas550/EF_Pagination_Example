@@ -39,7 +39,8 @@ namespace EF_Pagination_Example
 
             services.AddControllers();
             services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
+
+            services.AddSwaggerConfiguration();
 
             services.AddScoped<AppDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
@@ -59,10 +60,10 @@ namespace EF_Pagination_Example
 
         public static async Task Configure(WebApplication app)
         {
+            app.UseSwaggerConfiguration();
+
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
             }
 
             app.UseHttpsRedirection();
