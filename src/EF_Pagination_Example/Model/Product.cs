@@ -11,6 +11,7 @@ namespace EF_Pagination_Example.Model
         public string Name { get; set; } = string.Empty;
         
         public string? Description { get; set; } = string.Empty;
+        public string? teste { get; set; } = string.Empty;
         
         [Required]
         [Column(TypeName = "decimal(10,2)")]
