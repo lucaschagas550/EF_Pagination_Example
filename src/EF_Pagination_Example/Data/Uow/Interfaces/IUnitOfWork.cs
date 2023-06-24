@@ -2,6 +2,6 @@
 {
     public interface IUnitOfWork : IDisposable, IAsyncDisposable
     {
-        Task<bool> Commit();
+        Task<bool> CommitAsync();
     }
 }

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EFPaginationExample.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20230621233911_Product")]
+    [Migration("20230624033925_Product")]
     partial class Product
     {
         /// <inheritdoc />

@@ -1,10 +1,16 @@
-﻿namespace EF_Pagination_Example.Configuration
+﻿using System.Text.Json.Serialization;
+
+namespace EF_Pagination_Example.Configuration
 {
     public static class ApiConfig
     {
         public static void AddApiConfiguration(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddControllers();
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles; //Ignora loop infinitos
+            });
+
             services.AddEndpointsApiExplorer();
 
             var urlClients = new[] { "", };

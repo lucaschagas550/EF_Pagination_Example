@@ -5,7 +5,7 @@
         private const int GreaterThanOne = 1;
         private const int EqualToOne = 1;
 
-        public IEnumerable<T> Content { get; }
+        public List<T> Content { get; }
         public int TotalPages { get; }
         public int TotalElements { get; }
         public int Number { get; }
@@ -17,7 +17,7 @@
 
         public Page() { }
 
-        public Page(int total, IEnumerable<T> content, Pageable pageable)
+        public Page(int total, List<T> content, Pageable pageable)
         {
             Number = pageable.Page;
             Size = pageable.Size;

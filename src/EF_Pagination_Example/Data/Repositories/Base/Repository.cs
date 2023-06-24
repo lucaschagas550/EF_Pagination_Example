@@ -8,7 +8,7 @@ namespace EF_Pagination_Example.Data.Repositories.Base
 {
     public abstract class Repository<TEntity> : IRepository<TEntity> where TEntity : Entity
     {
-        private const int LessOne = 1;
+        private const int LESS_ONE = 1;
 
         protected readonly IUnitOfWork _uow;
         private readonly AppDbContext _context;
@@ -23,7 +23,7 @@ namespace EF_Pagination_Example.Data.Repositories.Base
 
         protected AppDbContext Context() => _context;
 
-        public async Task<IEnumerable<TEntity>> Paginate(IQueryable<TEntity> query, Pageable pageable, CancellationToken cancellationToken)
+        public virtual async Task<List<TEntity>> PaginateAsync(IQueryable<TEntity> query, Pageable pageable, CancellationToken cancellationToken)
         {
             try
             {
@@ -31,7 +31,7 @@ namespace EF_Pagination_Example.Data.Repositories.Base
 
                 return await query
                                 .AsNoTrackingWithIdentityResolution()
-                                .Skip((pageable.Page - LessOne) * pageable.Size)
+                                .Skip((pageable.Page - LESS_ONE) * pageable.Size)
                                 .Take(pageable.Size)
                                 .ToListAsync(cancellationToken)
                                 .ConfigureAwait(false);
@@ -42,7 +42,7 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<TEntity?> GetById(Guid id, CancellationToken cancellationToken)
+        public virtual async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             try
             {
@@ -56,14 +56,14 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<TEntity> Create(TEntity entity, CancellationToken cancellationToken)
+        public virtual async Task<TEntity> CreateAsync(TEntity entity, CancellationToken cancellationToken)
         {
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
                 var result = await _dbSet.AddAsync(entity, cancellationToken).ConfigureAwait(false);
-                await _uow.Commit().ConfigureAwait(false);
+                await _uow.CommitAsync().ConfigureAwait(false);
                 return result.Entity;
             }
             catch (Exception exception)
@@ -72,14 +72,14 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<IEnumerable<TEntity>> Create(ICollection<TEntity> entities, CancellationToken cancellationToken)
+        public virtual async Task<List<TEntity>> CreateAsync(List<TEntity> entities, CancellationToken cancellationToken)
         {
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
                 await _dbSet.AddRangeAsync(entities, cancellationToken).ConfigureAwait(false);
-                await _uow.Commit().ConfigureAwait(false);
+                await _uow.CommitAsync().ConfigureAwait(false);
                 return entities;
             }
             catch (Exception exception)
@@ -88,14 +88,14 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<TEntity> Update(TEntity entity, CancellationToken cancellationToken)
+        public virtual async Task<TEntity> Update(TEntity entity, CancellationToken cancellationToken)
         {
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
                 var result = _dbSet.Update(entity);
-                await _uow.Commit().ConfigureAwait(false);
+                await _uow.CommitAsync().ConfigureAwait(false);
                 return result.Entity;
             }
             catch (Exception exception)
@@ -104,14 +104,14 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<IEnumerable<TEntity>> Update(ICollection<TEntity> entities, CancellationToken cancellationToken)
+        public virtual async Task<List<TEntity>> Update(List<TEntity> entities, CancellationToken cancellationToken)
         {
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
                 _dbSet.UpdateRange(entities);
-                await _uow.Commit().ConfigureAwait(false);
+                await _uow.CommitAsync().ConfigureAwait(false);
                 return entities;
             }
             catch (Exception exception)
@@ -120,14 +120,14 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<TEntity> Delete(TEntity entity, CancellationToken cancellationToken)
+        public virtual async Task<TEntity> Delete(TEntity entity, CancellationToken cancellationToken)
         {
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
                 var result = _dbSet.Remove(entity);
-                await _uow.Commit().ConfigureAwait(false);
+                await _uow.CommitAsync().ConfigureAwait(false);
                 return result.Entity;
             }
             catch (Exception exception)
@@ -136,14 +136,14 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task<IEnumerable<TEntity>> Delete(ICollection<TEntity> entities, CancellationToken cancellationToken)
+        public virtual async Task<List<TEntity>> DeleteRange(List<TEntity> entities, CancellationToken cancellationToken)
         {
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
                 _dbSet.RemoveRange(entities);
-                await _uow.Commit().ConfigureAwait(false);
+                await _uow.CommitAsync().ConfigureAwait(false);
                 return entities;
             }
             catch (Exception exception)
@@ -152,11 +152,11 @@ namespace EF_Pagination_Example.Data.Repositories.Base
             }
         }
 
-        public async Task Commit()
+        public virtual async Task CommitAsync()
         {
             try
             {
-                await _uow.Commit().ConfigureAwait(false);
+                await _uow.CommitAsync().ConfigureAwait(false);
             }
             catch (Exception exception)
             {

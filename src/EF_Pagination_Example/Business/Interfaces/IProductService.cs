@@ -4,8 +4,8 @@ using EF_Pagination_Example.Model;
 
 namespace EF_Pagination_Example.Business.Interfaces
 {
-    public interface ICategoryService : ICrudServices<Category>
+    public interface IProductService : ICrudServices<Product>
     {
-        Task<Page<Category>> GetAsync(CategoryPage pagination, CancellationToken cancellationToken);
+        Task<Page<Product>> GetAsync(ProductPage pagination, CancellationToken cancellationToken);
     }
 }

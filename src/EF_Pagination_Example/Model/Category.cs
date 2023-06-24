@@ -12,7 +12,7 @@ namespace EF_Pagination_Example.Model
         [Required]
         public string Description { get; set; } = null!;
 
-        public virtual List<CategoryProduct> CategoryProduct { get; set; }
+        public List<CategoryProduct> CategoryProduct { get; set; }
 
         public Category()
         {

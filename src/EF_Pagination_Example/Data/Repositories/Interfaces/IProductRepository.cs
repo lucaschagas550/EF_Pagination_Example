@@ -4,8 +4,8 @@ using EF_Pagination_Example.Model;
 
 namespace EF_Pagination_Example.Data.Repositories.Interfaces
 {
-    public interface ICategoryRepository : IRepository<Category>
+    public interface IProductRepository : IRepository<Product>
     {
-        Task<Page<Category>> GetAsync(CategoryPage categoryPage, CancellationToken cancellationToken);
+        Task<Page<Product>> GetAsync(ProductPage productPage, CancellationToken cancellationToken);
     }
 }

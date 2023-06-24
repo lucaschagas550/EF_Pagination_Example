@@ -17,8 +17,10 @@ namespace EF_Pagination_Example.Configuration
         {
             services.AddScoped<AppDbContext>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryProductRepository, CategoryProductRepository>();
 
             services.AddScoped<INotifier, Notifier>();
             services.AddScoped<IAspNetUser, AspNetUser>();
@@ -29,6 +31,8 @@ namespace EF_Pagination_Example.Configuration
             services.AddScoped<IPermissionsManagementService, PermissionsManagementService>();
 
             services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IProductService, ProductService>();
+            services.AddScoped<ICategoryProductService, CategoryProductService>();
         }
     }
 }

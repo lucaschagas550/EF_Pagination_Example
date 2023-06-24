@@ -9,48 +9,94 @@ namespace EF_Pagination_Example.Business.Services
     public class CategoryService : BaseService, ICategoryService
     {
         private readonly ICategoryRepository _categoryRepository;
+
         public CategoryService(INotifier notifier, ICategoryRepository categoryRepository) : base(notifier)
         {
             _categoryRepository = categoryRepository;
         }
 
-        public async Task<Category> Create(Category category, CancellationToken cancellationToken)
+        public async Task<Category> CreateAsync(Category category, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
 
-            return await _categoryRepository.Create(category, cancellationToken).ConfigureAwait(false);
+                var result = await _categoryRepository.CreateAsync(category, cancellationToken).ConfigureAwait(false);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return Notify(ex.Message, category);
+            }
         }
 
-        public async Task<Category> Delete(Category category, CancellationToken cancellationToken)
+        public async Task<Category> DeleteAsync(Guid id, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
 
-            return await _categoryRepository.Delete(category, cancellationToken).ConfigureAwait(false);
+                var category = await _categoryRepository.GetByIdAsync(id, cancellationToken).ConfigureAwait(false);
+                if (category is null)
+                    return Notify("item not found", new Category());
+
+                var result = await _categoryRepository.Delete(category, cancellationToken).ConfigureAwait(false);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return Notify(ex.Message, new Category());
+            }
         }
 
-        public async Task<Page<Category>> Get(CategoryPage pagination, CancellationToken cancellationToken)
+        public async Task<Page<Category>> GetAsync(CategoryPage pagination, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
 
-            return await _categoryRepository.Get(pagination, cancellationToken).ConfigureAwait(false);
+                return await _categoryRepository.GetAsync(pagination, cancellationToken).ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+                return Notify(ex.Message, new Page<Category>());
+            }
         }
 
-        public async Task<Category?> GetById(Guid id, CancellationToken cancellationToken)
+        public async Task<Category?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
 
-            var entity = await _categoryRepository.GetById(id, cancellationToken).ConfigureAwait(false);
+                var entity = await _categoryRepository.GetByIdAsync(id, cancellationToken).ConfigureAwait(false);
 
-            if (entity == null) Notify("item not found");
+                if (entity == null) Notify("item not found");
 
-            return entity;
+                return entity;
+            }
+            catch (Exception ex)
+            {
+                return Notify(ex.Message, new Category());
+            }
         }
 
-        public async Task<Category> Update(Category category, CancellationToken cancellationToken)
+        public async Task<Category> UpdateAsync(Category category, CancellationToken cancellationToken)
         {
-            cancellationToken.ThrowIfCancellationRequested();
+            try
+            {
+                cancellationToken.ThrowIfCancellationRequested();
 
-            return await _categoryRepository.Update(category, cancellationToken).ConfigureAwait(false);
+                var result = await _categoryRepository.Update(category, cancellationToken).ConfigureAwait(false);
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return Notify(ex.Message, category);
+            }
         }
     }
 }

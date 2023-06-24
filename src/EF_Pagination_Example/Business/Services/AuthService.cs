@@ -193,7 +193,7 @@ namespace EF_Pagination_Example.Business.Services
 
             await _refreshTokenRepository.DeleteRefreshTokenAsync(email, cancellationToken).ConfigureAwait(false);
             await _refreshTokenRepository.CreateRefreshTokenAsync(refreshToken, cancellationToken).ConfigureAwait(false);
-            await _refreshTokenRepository.Commit().ConfigureAwait(false);
+            await _refreshTokenRepository.CommitAsync().ConfigureAwait(false);
 
             return refreshToken;
         }

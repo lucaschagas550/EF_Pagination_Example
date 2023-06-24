@@ -10,7 +10,7 @@ namespace EF_Pagination_Example.Data.Uow
         public UnitOfWork(AppDbContext context) =>
             _context = context;
 
-        public async Task<bool> Commit() =>
+        public async Task<bool> CommitAsync() =>
             await _context.SaveChangesAsync().ConfigureAwait(false) > Empty;
 
         public void Dispose()

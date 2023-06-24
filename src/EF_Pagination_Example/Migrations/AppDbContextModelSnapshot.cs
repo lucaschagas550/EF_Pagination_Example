@@ -103,7 +103,7 @@ namespace EFPaginationExample.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 
             modelBuilder.Entity("EF_Pagination_Example.Model.CategoryProduct", b =>
@@ -124,7 +124,7 @@ namespace EFPaginationExample.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("CategoryProduct", (string)null);
+                    b.ToTable("CategoryProduct");
                 });
 
             modelBuilder.Entity("EF_Pagination_Example.Model.Product", b =>
@@ -145,7 +145,7 @@ namespace EFPaginationExample.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Products", (string)null);
+                    b.ToTable("Products");
                 });
 
             modelBuilder.Entity("EF_Pagination_Example.Model.RefreshToken", b =>
@@ -166,7 +166,7 @@ namespace EFPaginationExample.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>

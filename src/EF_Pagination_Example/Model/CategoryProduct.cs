@@ -4,14 +4,15 @@ namespace EF_Pagination_Example.Model
 {
     public class CategoryProduct : Entity
     {
-        [ForeignKey("CategoryId")]
+        [ForeignKey(nameof(Category))]
         public Guid CategoryId { get; set; }
 
-        [ForeignKey("ProductId")]
+        [ForeignKey(nameof(Product))]
         public Guid ProductId { get; set; }
 
-        public virtual Category Category { get; set; } = new Category();
-        public virtual Product Product { get; set; } = new Product();
+        public Category Category;
+
+        public Product Product;
 
         public CategoryProduct() { }
 
