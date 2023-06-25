@@ -20,7 +20,12 @@ namespace EF_Pagination_Example.Data.Repositories.DataAccess
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var queryData = Context().Supplier.Include(p => p.Products).AsQueryable();
+                var queryData = Context()
+                    .Supplier
+                    .Include(p => p.Products)
+                    .Include(a => a.Address)
+                        .ThenInclude(a => a.Audit.Created)
+                    .AsQueryable();
                 ListApplyWhere(supplierPage, ref queryData);
                 ListApplyOrderBy(supplierPage, ref queryData);
 
@@ -44,6 +49,8 @@ namespace EF_Pagination_Example.Data.Repositories.DataAccess
                 return await Context()
                     .Supplier
                     .Include(p => p.Products)
+                    .Include(a => a.Address)
+                        .ThenInclude(a => a.Audit.Created)
                     .AsNoTracking()
                     .FirstOrDefaultAsync(e => e.Id.Equals(id), cancellationToken)
                     .ConfigureAwait(false);

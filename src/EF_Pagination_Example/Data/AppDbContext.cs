@@ -15,6 +15,7 @@ namespace EF_Pagination_Example.Data
         public DbSet<Product> Product { get; set; } = null!;
         public DbSet<CategoryProduct> CategoryProduct { get; set; } = null!;
         public DbSet<Supplier> Supplier { get; set; } = null!;
+        public DbSet<Address> Address { get; set; } = null!;
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

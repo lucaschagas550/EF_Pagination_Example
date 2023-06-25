@@ -38,13 +38,5 @@ namespace EF_Pagination_Example.Model
             Price = price;
             CategoryProduct = new List<CategoryProduct>();
         }
-
-        public void SetCategoryProductId()
-        {
-            foreach (var item in CategoryProduct)
-            {
-                item.ProductId = Id;
-            }
-        }
     }
 }

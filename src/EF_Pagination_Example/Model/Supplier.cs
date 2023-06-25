@@ -18,11 +18,14 @@ namespace EF_Pagination_Example.Model
         public ETypeSupplier TypeSupplier { get; set; }
         public ESupplierStatus Active { get; set; }
 
+        /* EF One-to-One */
+        public Address? Address { get; set; }
+
         /* EF One-to-Many */
         public List<Product> Products { get; set; }
 
         public Supplier() 
-        { 
+        {
             Products = new List<Product>();
         }
 

@@ -9,10 +9,13 @@ namespace EF_Pagination_Example.Business.Services
     public class SupplierServices : BaseService, ISupplierServices
     {
         private readonly ISupplierRepository _supplierRepository;
+        private readonly IAspNetUser _aspNetUser;
 
-        public SupplierServices(INotifier notifier, ISupplierRepository supplierRepository) : base(notifier)
+
+        public SupplierServices(INotifier notifier, IAspNetUser aspNetUser, ISupplierRepository supplierRepository) : base(notifier)
         {
             _supplierRepository = supplierRepository;
+            _aspNetUser = aspNetUser;
         }
 
         public async Task<Page<Supplier>> GetAsync(SupplierPage pagination, CancellationToken cancellationToken)
@@ -54,6 +57,9 @@ namespace EF_Pagination_Example.Business.Services
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
+                var userId = _aspNetUser.GetUserId();
+
+                supplier.Address?.Audit.CreationAudit(userId);
                 var result = await _supplierRepository.CreateAsync(supplier, cancellationToken).ConfigureAwait(false);
 
                 return result;
@@ -69,6 +75,9 @@ namespace EF_Pagination_Example.Business.Services
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
+
+                var userId = _aspNetUser.GetUserId();
+                supplier.Address?.Audit.UpdateAudit(userId);
 
                 var result = await _supplierRepository.Update(supplier, cancellationToken).ConfigureAwait(false);
 

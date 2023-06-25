@@ -50,14 +50,12 @@ namespace EF_Pagination_Example.Business.Services
             }
         }
 
+        //Id do CategoryProduct.ProductId Eh setado pelo proprio EF ao salvar no banco, pelo Id do product
         public async Task<Product> CreateAsync(Product product, CancellationToken cancellationToken)
         {
             try
             {
                 cancellationToken.ThrowIfCancellationRequested();
-
-                if (product.CategoryProduct.Any())
-                    product.SetCategoryProductId();
 
                 var result = await _productRepository.CreateAsync(product, cancellationToken).ConfigureAwait(false);
 
@@ -90,6 +88,8 @@ namespace EF_Pagination_Example.Business.Services
             }
         }
 
+
+        //Id do CategoryProduct.ProductId Eh setado pelo proprio EF ao salvar no banco, pelo Id do product
         public async Task<Product> UpdateAsync(Product product, CancellationToken cancellationToken)
         {
             try
@@ -99,8 +99,6 @@ namespace EF_Pagination_Example.Business.Services
                 var entities = await _categoryProductService.GetAsync(product, cancellationToken).ConfigureAwait(false);
                 if (entities.Any())
                     await _categoryProductService.DeleteAsync(entities, cancellationToken).ConfigureAwait(false);
-
-                product.SetCategoryProductId();
 
                 await _categoryProductService.CreateAsync(product.CategoryProduct, cancellationToken).ConfigureAwait(false); 
                 var result = await _productRepository.Update(product, cancellationToken).ConfigureAwait(false);
