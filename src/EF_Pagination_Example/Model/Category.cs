@@ -12,6 +12,7 @@ namespace EF_Pagination_Example.Model
         [Required]
         public string Description { get; set; } = null!;
 
+        /*  EF Many-to-Many */
         public List<CategoryProduct> CategoryProduct { get; set; }
 
         public Category()

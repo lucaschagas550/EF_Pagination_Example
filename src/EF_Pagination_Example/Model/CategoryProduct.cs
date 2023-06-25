@@ -10,9 +10,9 @@ namespace EF_Pagination_Example.Model
         [ForeignKey(nameof(Product))]
         public Guid ProductId { get; set; }
 
-        public Category Category;
+        public Category? Category;
 
-        public Product Product;
+        public Product? Product;
 
         public CategoryProduct() { }
 

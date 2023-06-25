@@ -96,9 +96,9 @@ namespace EF_Pagination_Example.Business.Services
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
-                var entites = await _categoryProductService.GetAsync(product, cancellationToken).ConfigureAwait(false);
-                if (entites.Any())
-                    await _categoryProductService.DeleteAsync(entites, cancellationToken).ConfigureAwait(false);
+                var entities = await _categoryProductService.GetAsync(product, cancellationToken).ConfigureAwait(false);
+                if (entities.Any())
+                    await _categoryProductService.DeleteAsync(entities, cancellationToken).ConfigureAwait(false);
 
                 product.SetCategoryProductId();
 

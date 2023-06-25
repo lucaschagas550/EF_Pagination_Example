@@ -21,6 +21,7 @@ namespace EF_Pagination_Example.Configuration
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<ICategoryProductRepository, CategoryProductRepository>();
+            services.AddScoped<ISupplierRepository, SupplierRepository>();
 
             services.AddScoped<INotifier, Notifier>();
             services.AddScoped<IAspNetUser, AspNetUser>();
@@ -33,6 +34,7 @@ namespace EF_Pagination_Example.Configuration
             services.AddScoped<ICategoryService, CategoryService>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryProductService, CategoryProductService>();
+            services.AddScoped<ISupplierServices, SupplierServices>();
         }
     }
 }
