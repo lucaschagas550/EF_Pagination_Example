@@ -34,8 +34,9 @@ namespace EF_Pagination_Example.Controllers
                 NotifyError("Invalid Refresh Token.");
                 return CustomResponse();
             }
-
-            var token = await _authService.GetRefreshTokenAsync(Guid.Parse(refreshToken), CancellationToken.None).ConfigureAwait(false);
+            
+            Guid.TryParse(refreshToken, out var refreshTokenString);
+            var token = await _authService.GetRefreshTokenAsync(refreshTokenString, CancellationToken.None).ConfigureAwait(false);
 
             if (token is null)
             {
@@ -43,7 +44,7 @@ namespace EF_Pagination_Example.Controllers
                 return CustomResponse();
             }
 
-            return CustomResponse(await _authService.GenerateJwtAsync(token.Email, CancellationToken.None).ConfigureAwait(false));
+            return CustomResponse(await _authService.GenerateJwtAsync(token.UserId, CancellationToken.None).ConfigureAwait(false));
         }
 
         [HttpPost("Register")]

@@ -63,11 +63,11 @@ namespace EF_Pagination_Example.Business.Services
             return Notify("Incorrect username or password", new LoginResponseViewModel());
         }
 
-        public async Task<LoginResponseViewModel> GenerateJwtAsync(string email, CancellationToken cancellationToken)
+        public async Task<LoginResponseViewModel> GenerateJwtAsync(string userId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var user = await _userManager.FindByEmailAsync(email).ConfigureAwait(false);
+            var user = await _userManager.FindByIdAsync(userId.ToString()).ConfigureAwait(false);
             if (user is null)
                 return Notify("Incorrect username or password.", new LoginResponseViewModel());
 
@@ -128,7 +128,7 @@ namespace EF_Pagination_Example.Business.Services
             var claims = await _userManager.GetClaimsAsync(user).ConfigureAwait(false);
             var identityClaims = await GetClaimsUserAsync(claims, user).ConfigureAwait(false);
             var encodedToken = EncodeToken(identityClaims);
-            var refreshToken = await GenerateRefreshTokenAsync(user.Email ?? "", cancellationToken).ConfigureAwait(false);
+            var refreshToken = await GenerateRefreshTokenAsync(user.Id ?? "", cancellationToken).ConfigureAwait(false);
 
             return GetResponseToken(encodedToken, user, claims, refreshToken);
         }
@@ -185,13 +185,13 @@ namespace EF_Pagination_Example.Business.Services
             };
         }
 
-        private async Task<RefreshToken> GenerateRefreshTokenAsync(string email, CancellationToken cancellationToken)
+        private async Task<RefreshToken> GenerateRefreshTokenAsync(string userId, CancellationToken cancellationToken)
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            var refreshToken = new RefreshToken(email, DateTime.UtcNow.AddHours(_token.RefreshTokenExpirationHours));
+            var refreshToken = new RefreshToken(userId, DateTime.UtcNow.AddHours(_token.RefreshTokenExpirationHours));
 
-            await _refreshTokenRepository.DeleteRefreshTokenAsync(email, cancellationToken).ConfigureAwait(false);
+            await _refreshTokenRepository.DeleteRefreshTokenAsync(userId, cancellationToken).ConfigureAwait(false);
             await _refreshTokenRepository.CreateRefreshTokenAsync(refreshToken, cancellationToken).ConfigureAwait(false);
             await _refreshTokenRepository.CommitAsync().ConfigureAwait(false);
 

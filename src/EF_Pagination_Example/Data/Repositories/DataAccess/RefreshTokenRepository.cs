@@ -38,7 +38,7 @@ namespace EF_Pagination_Example.Data.Repositories.DataAccess
                .ConfigureAwait(false);
         }
 
-        public async Task DeleteRefreshTokenAsync(string email, CancellationToken cancellationToken)
+        public async Task DeleteRefreshTokenAsync(string userId, CancellationToken cancellationToken)
         {
             try
             {
@@ -47,7 +47,7 @@ namespace EF_Pagination_Example.Data.Repositories.DataAccess
                 var entities = await Context()
                     .RefreshTokens
                     .AsNoTracking()
-                    .Where(r => r.Email.Equals(email))
+                    .Where(r => r.UserId.Equals(userId))
                     .ToListAsync(cancellationToken)
                     .ConfigureAwait(false);
 

@@ -1,17 +1,23 @@
-﻿namespace EF_Pagination_Example.Model
+﻿using System.ComponentModel.DataAnnotations.Schema;
+
+namespace EF_Pagination_Example.Model
 {
     public class RefreshToken : Entity
     {
-        public string Email { get; set; } = null!;
+        [ForeignKey(nameof(AppUser))]
+        public string UserId { get; set; } = string.Empty;
         public Guid Token { get; set; }
         public DateTime ExpirationDate { get; set; }
 
+        /* EF One-to-One */
+        public AppUser? AppUser { get; set; }
+
         public RefreshToken() { }
 
-        public RefreshToken(string email, DateTime expirationDate)
+        public RefreshToken(string userId, DateTime expirationDate)
         {
             Token = Guid.NewGuid();
-            Email = email;
+            UserId = userId;
             ExpirationDate = expirationDate;
         }
     }
