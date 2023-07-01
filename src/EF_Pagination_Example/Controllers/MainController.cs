@@ -10,24 +10,16 @@ namespace EF_Pagination_Example.Controllers
     public abstract class MainController : ControllerBase
     {
         protected Guid UserId { get; set; }
-        
+
         private readonly INotifier _notifier;
-        public readonly IAspNetUser _aspNetUser;
 
         protected bool AuthenticatedUser { get; set; }
 
         protected MainController(
-            INotifier notifier,
-            IAspNetUser appNetUser)
+            INotifier notifier
+            )
         {
             _notifier = notifier;
-            _aspNetUser = appNetUser;
-
-            if (appNetUser.IsAuthenticated())
-            {
-                UserId = appNetUser.GetUserId();
-                AuthenticatedUser = true;
-            }
         }
 
         protected bool ValidOperation()

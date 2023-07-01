@@ -14,7 +14,7 @@ namespace EF_Pagination_Example.Controllers
     {
         private readonly ICategoryService _categoryService;
 
-        public CategoryController(INotifier notifier, IAspNetUser aspNetUser, ICategoryService categoryService) : base(notifier, aspNetUser) =>
+        public CategoryController(INotifier notifier, ICategoryService categoryService) : base(notifier) =>
             _categoryService = categoryService;
 
         [HttpGet()]

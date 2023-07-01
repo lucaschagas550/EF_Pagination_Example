@@ -1,5 +1,4 @@
 ﻿using EF_Pagination_Example.Business.Interfaces;
-using EF_Pagination_Example.Business.Services;
 using EF_Pagination_Example.Communication;
 using EF_Pagination_Example.Data.Pagination.Base;
 using EF_Pagination_Example.Data.Pagination.Page;
@@ -15,7 +14,7 @@ namespace EF_Pagination_Example.Controllers
     {
         private readonly IProductService _productService;
 
-        public ProductController(INotifier notifier, IAspNetUser aspNetUser, IProductService productService) : base(notifier, aspNetUser) =>
+        public ProductController(INotifier notifier, IProductService productService) : base(notifier) =>
             _productService = productService;
 
         [HttpGet()]

@@ -16,8 +16,7 @@ namespace EF_Pagination_Example.Controllers.Admin
 
         public UsersManagementController(
             INotifier notifier,
-            IAspNetUser aspNetUser,
-            IAdminService adminService) : base(notifier, aspNetUser)
+            IAdminService adminService) : base(notifier)
         {
             _adminService = adminService;
         }

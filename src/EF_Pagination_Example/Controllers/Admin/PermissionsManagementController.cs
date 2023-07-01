@@ -17,8 +17,7 @@ namespace EF_Pagination_Example.Controllers.Admin
 
         public PermissionsManagementController(
             INotifier notifier,
-            IAspNetUser aspNetUser,
-            IPermissionsManagementService rolesManagementService) : base(notifier, aspNetUser)
+            IPermissionsManagementService rolesManagementService) : base(notifier)
         {
             _rolesManagementService = rolesManagementService;
         }

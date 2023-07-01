@@ -14,7 +14,7 @@ namespace EF_Pagination_Example.Controllers
     {
         private readonly ISupplierServices _supplierServices;
 
-        public SupplierController(INotifier notifier, IAspNetUser aspNetUser, ISupplierServices supplierServices) : base(notifier, aspNetUser) =>
+        public SupplierController(INotifier notifier, ISupplierServices supplierServices) : base(notifier) =>
             _supplierServices = supplierServices;
 
         [HttpGet()]

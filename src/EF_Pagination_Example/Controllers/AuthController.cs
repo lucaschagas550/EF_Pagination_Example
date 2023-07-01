@@ -10,7 +10,7 @@ namespace EF_Pagination_Example.Controllers
     {
         private readonly IAuthService _authService;
 
-        public AuthController(INotifier notifier, IAspNetUser aspNetUser, IAuthService authService) : base(notifier, aspNetUser) =>
+        public AuthController(INotifier notifier, IAuthService authService) : base(notifier) =>
             _authService = authService;
 
         [HttpPost("Login")]
