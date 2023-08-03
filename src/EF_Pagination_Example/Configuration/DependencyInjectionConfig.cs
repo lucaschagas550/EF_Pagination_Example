@@ -31,10 +31,24 @@ namespace EF_Pagination_Example.Configuration
             services.AddScoped<IAdminService, UsersManagementService>();
             services.AddScoped<IPermissionsManagementService, PermissionsManagementService>();
 
-            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoryService, CategoryService>(serviceProvider => serviceProvider.CategoryService());
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<ICategoryProductService, CategoryProductService>();
             services.AddScoped<ISupplierServices, SupplierServices>();
         }
+
+    }
+}
+
+//Pode ser uma outra classe
+public static class ConfigureServices
+{
+    //Metodo para realizar uma configuracao especifica para o CategoryService, podendo receber valores de um vault por exemplo e injetar no service como um REDIS_PORT
+    public static CategoryService CategoryService(this IServiceProvider service)
+    {
+        var categoryRepository = service.GetRequiredService<ICategoryRepository>();
+        var notifier = service.GetRequiredService<INotifier>();
+
+        return new CategoryService(notifier, categoryRepository);
     }
 }
