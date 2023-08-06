@@ -1,0 +1,9 @@
+version: "3"
+
+services:
+  ef_pagination_example:
+    image: ef_pagination_example/api:latest
+    container_name: ef_pagination_example
+    build:
+      context: .
+      dockerfile: EF_Pagination_Example/Dockerfile

@@ -24,8 +24,8 @@ namespace EF_Pagination_Example.Model
         [Required]
         public int Number { get; set; }
 
-        public Audit Audit { get; set; } = null!;
-
+        public Audit Audit { get; set; }
+        
         /* EF One-to-One */
         public Supplier? Supplier { get; set; }
 

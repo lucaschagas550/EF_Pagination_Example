@@ -7,10 +7,11 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
-COPY ["src/EF_Pagination_Example/EF_Pagination_Example.csproj", "src/EF_Pagination_Example/"]
-RUN dotnet restore "src/EF_Pagination_Example/EF_Pagination_Example.csproj"
+COPY "EF_Pagination_Example/EF_Pagination_Example.csproj" "EF_Pagination_Example/"
+RUN dotnet restore "EF_Pagination_Example/EF_Pagination_Example.csproj"
+
 COPY . .
-WORKDIR "/src/src/EF_Pagination_Example"
+WORKDIR "/src/EF_Pagination_Example"
 RUN dotnet build "EF_Pagination_Example.csproj" -c Release -o /app/build
 
 FROM build AS publish

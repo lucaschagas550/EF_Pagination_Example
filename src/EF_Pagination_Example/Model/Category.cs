@@ -26,8 +26,5 @@ namespace EF_Pagination_Example.Model
             Description = description;
             CategoryProduct = new List<CategoryProduct>();
         }
-
-        public void SetCategoryId() =>
-            CategoryProduct.Select(c => c.CategoryId = Id);
     }
 }
