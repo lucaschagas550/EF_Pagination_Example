@@ -21,7 +21,7 @@
 
         public string? Search { get; set; }
         public string? Sort { get; set; }
-        public SortDirection? Direction { get; set; } = SortDirection.ASC;
+        public SortDirection? Direction { get; set; } = SortDirection.DESC;
     }
 
     public enum SortDirection

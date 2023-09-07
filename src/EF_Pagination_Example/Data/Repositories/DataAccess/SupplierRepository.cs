@@ -43,7 +43,19 @@ namespace EF_Pagination_Example.Data.Repositories.DataAccess
         public override async Task<Supplier?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
         {
             try
-            {
+            {//Criar um endpoint q retorne uma dto, com produto e address e apenas o nome do usuario e data que criou
+                //return await Context()
+                //.Supplier
+                //.Include(p => p.Products)
+                //.Include(a => a.Address)
+                //    .ThenInclude(a => a.Audit.Created)
+                //.AsNoTracking()
+                //.Select(o => new Supplier()
+                //{
+                //    Id = o.Id,
+                //})
+                //.FirstOrDefaultAsync(e => e.Id.Equals(id), cancellationToken)
+                //.ConfigureAwait(false);
                 cancellationToken.ThrowIfCancellationRequested();
 
                 return await Context()

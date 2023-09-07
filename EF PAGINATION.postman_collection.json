@@ -1,0 +1,942 @@
+{
+	"info": {
+		"_postman_id": "29a98d84-c120-4895-a4b0-8f583f21394e",
+		"name": "EF PAGINATION",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "8798652",
+		"_collection_link": "https://grey-station-642858.postman.co/workspace/teste~1ba220b4-6537-412a-a465-c05ac4e48924/collection/8798652-29a98d84-c120-4895-a4b0-8f583f21394e?action=share&source=collection_link&creator=8798652"
+	},
+	"item": [
+		{
+			"name": "EF PAGINATION",
+			"item": [
+				{
+					"name": "CATEGORY",
+					"item": [
+						{
+							"name": "Get List Category",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{Token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7294/Category?Sort=Name&Direction=0",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7294",
+									"path": [
+										"Category"
+									],
+									"query": [
+										{
+											"key": "Page",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "Size",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "Sort",
+											"value": "Name",
+											"description": "Campo para ordernar"
+										},
+										{
+											"key": "Direction",
+											"value": "0",
+											"description": "Direcao 0:ASC; 1:DESC"
+										},
+										{
+											"key": "Search",
+											"value": "le",
+											"disabled": true
+										},
+										{
+											"key": "Name",
+											"value": "Leao",
+											"disabled": true
+										},
+										{
+											"key": "Description",
+											"value": "Assasino",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Category By Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBZG1pbiI6WyJSZWFkIiwiSW5zZXJ0IiwiVXBkYXRlIiwiRGVsZXRlIl0sInN1YiI6IjFhNzczMzZmLWVlYzgtNDkxZC1hMzQ4LTQ5NmQzMzI1NTAxMSIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwianRpIjoiM2Y2YTJkOGYtYWU1Yy00ZGQ4LWExODctNWNjMTJlZTRmNzBhIiwibmJmIjoxNjg2NzA0NzI2LCJpYXQiOjE2ODY3MDQ3MjYsInJvbGUiOiJBZG1pbiIsImV4cCI6MTY4NjcwODMyNiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzI5NCIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0In0.nd2Ll0IQUgkEzNB71wFaqeSjrHeZMRH2Z8lmp5Ksjq4"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://localhost:7294/Category/C3F0C623-4B2B-4A12-876E-1EC9DB1D18A6"
+							},
+							"response": []
+						},
+						{
+							"name": "Post Category",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"test again\",\r\n  \"description\": \"again\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://localhost:44395/Category"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "ADMIN",
+					"item": [
+						{
+							"name": "Users",
+							"item": [
+								{
+									"name": "Get List Users",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{Token}}"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:7294/UsersManagement/Get?Page=1&Size=10&Direction=1&Sort=Email",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7294",
+											"path": [
+												"UsersManagement",
+												"Get"
+											],
+											"query": [
+												{
+													"key": "Page",
+													"value": "1"
+												},
+												{
+													"key": "Size",
+													"value": "10"
+												},
+												{
+													"key": "Search",
+													"value": "le",
+													"disabled": true
+												},
+												{
+													"key": "Name",
+													"value": "Leao",
+													"disabled": true
+												},
+												{
+													"key": "Description",
+													"value": "Assasino",
+													"disabled": true
+												},
+												{
+													"key": "Direction",
+													"value": "1"
+												},
+												{
+													"key": "Sort",
+													"value": "Email"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get User By Id",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBZG1pbiI6WyJSZWFkIiwiSW5zZXJ0IiwiVXBkYXRlIiwiRGVsZXRlIl0sInN1YiI6IjFhNzczMzZmLWVlYzgtNDkxZC1hMzQ4LTQ5NmQzMzI1NTAxMSIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwianRpIjoiM2Y2YTJkOGYtYWU1Yy00ZGQ4LWExODctNWNjMTJlZTRmNzBhIiwibmJmIjoxNjg2NzA0NzI2LCJpYXQiOjE2ODY3MDQ3MjYsInJvbGUiOiJBZG1pbiIsImV4cCI6MTY4NjcwODMyNiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzI5NCIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0In0.nd2Ll0IQUgkEzNB71wFaqeSjrHeZMRH2Z8lmp5Ksjq4"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"url": "https://localhost:7294/UsersManagement/GetById/1a77336f-eec8-491d-a348-496d33255011"
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Permissions",
+							"item": [
+								{
+									"name": "Get List Roles",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{Token}}"
+											}
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "https://localhost:7294/PermissionsManagement/Role?Direction=1&Sort=Name",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7294",
+											"path": [
+												"PermissionsManagement",
+												"Role"
+											],
+											"query": [
+												{
+													"key": "Page",
+													"value": "1",
+													"disabled": true
+												},
+												{
+													"key": "Size",
+													"value": "10",
+													"disabled": true
+												},
+												{
+													"key": "Direction",
+													"value": "1"
+												},
+												{
+													"key": "Sort",
+													"value": "Name"
+												},
+												{
+													"key": "Search",
+													"value": null,
+													"disabled": true
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Post Role",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{Token}}"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "\"Admin\"",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "https://localhost:7294/PermissionsManagement/Role"
+									},
+									"response": []
+								},
+								{
+									"name": "Post Claims",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{Token}}"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"role\": {\r\n        \"id\": \"d35b72ac-a5f3-45be-9b6d-9747d4771dff\",\r\n        \"name\": \"Teste\",\r\n        \"normalizedName\": \"TESTE\",\r\n        \"concurrencyStamp\": null\r\n        },\r\n     \"Type\":  \"Teste\",\r\n     \"Value\": \"Update\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "https://localhost:7294/PermissionsManagement/Claim"
+									},
+									"response": []
+								},
+								{
+									"name": "Post Add Role User",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{Token}}"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"userId\":\"226ddf34-e32c-4b13-81e7-fcba533ccb46\",\r\n    \"roleName\":\"Admin\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "https://localhost:7294/PermissionsManagement/AddRoleUser"
+									},
+									"response": []
+								},
+								{
+									"name": "Post Add Claim User",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{Token}}"
+											}
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"userId\":\"226ddf34-e32c-4b13-81e7-fcba533ccb46\",\r\n    \"roleId\": \"d35b72ac-a5f3-45be-9b6d-9747d4771dff\",\r\n    \"type\": \"Teste\",\r\n    \"value\": \"Insert\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "https://localhost:7294/PermissionsManagement/AddClaimUser"
+									},
+									"response": []
+								},
+								{
+									"name": "Put Revoke Claim User",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{Token}}"
+											}
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"userId\": \"226ddf34-e32c-4b13-81e7-fcba533ccb46\",\r\n    \"type\": \"User\",\r\n    \"value\": \"teste\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "https://localhost:7294/PermissionsManagement/ClaimRevoked"
+									},
+									"response": []
+								},
+								{
+									"name": "Put Revoke Role User",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{Token}}"
+											}
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"userId\":\"226ddf34-e32c-4b13-81e7-fcba533ccb46\",\r\n    \"roleName\": \"Teste\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "https://localhost:7294/PermissionsManagement/RoleRevoked"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Claim",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{Token}}"
+											}
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"roleId\": \"60967482-504a-4693-a3fa-fcf027dcbc8b\",\r\n    \"Type\":  \"Teste\",\r\n    \"Value\": \"Insert\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": "https://localhost:7294/PermissionsManagement/Claim"
+									},
+									"response": []
+								},
+								{
+									"name": "Delete Role",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": {
+												"token": "{{Token}}"
+											}
+										},
+										"method": "DELETE",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"id\":\"60967482-504a-4693-a3fa-fcf027dcbc8b\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "https://localhost:7294/PermissionsManagement/Role?Direction=1&Sort=Name",
+											"protocol": "https",
+											"host": [
+												"localhost"
+											],
+											"port": "7294",
+											"path": [
+												"PermissionsManagement",
+												"Role"
+											],
+											"query": [
+												{
+													"key": "Direction",
+													"value": "1"
+												},
+												{
+													"key": "Sort",
+													"value": "Name"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "AUTH",
+					"item": [
+						{
+							"name": "Post Login Auth",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"email\": \"admin@admin.com\",\r\n    \"password\": \"Admin@123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7294/Auth/Login",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7294",
+									"path": [
+										"Auth",
+										"Login"
+									],
+									"query": [
+										{
+											"key": "Page",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "Size",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "Sort",
+											"value": "3",
+											"disabled": true
+										},
+										{
+											"key": "Direction",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "Search",
+											"value": "le",
+											"disabled": true
+										},
+										{
+											"key": "Name",
+											"value": "Leao",
+											"disabled": true
+										},
+										{
+											"key": "Description",
+											"value": "Assasino",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post Refresh Token Auth",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "\"15093C86-F649-4E33-B20D-E433C23B4DA0\"",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7294/Auth/Refresh-Token",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7294",
+									"path": [
+										"Auth",
+										"Refresh-Token"
+									],
+									"query": [
+										{
+											"key": "Page",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "Size",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "Sort",
+											"value": "3",
+											"disabled": true
+										},
+										{
+											"key": "Direction",
+											"value": "1",
+											"disabled": true
+										},
+										{
+											"key": "Search",
+											"value": "le",
+											"disabled": true
+										},
+										{
+											"key": "Name",
+											"value": "Leao",
+											"disabled": true
+										},
+										{
+											"key": "Description",
+											"value": "Assasino",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Post Register",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{Token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"email\": \"user@user.com\",\r\n  \"password\": \"User@123\",\r\n  \"confirmPassword\": \"User@123\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://localhost:7294/Auth/Register"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PRODUCT",
+					"item": [
+						{
+							"name": "Get List Product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{Token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "https://localhost:7294/Product?Page=0&Size=0&Direction&Sort&Search",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7294",
+									"path": [
+										"Product"
+									],
+									"query": [
+										{
+											"key": "Page",
+											"value": "0"
+										},
+										{
+											"key": "Size",
+											"value": "0"
+										},
+										{
+											"key": "Direction",
+											"value": null,
+											"description": "Direcao 0:ASC; 1:DESC"
+										},
+										{
+											"key": "Sort",
+											"value": null,
+											"description": "Campo para ordernar"
+										},
+										{
+											"key": "Search",
+											"value": null
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Product By Id",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{Token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"url": "https://localhost:7294/Product/ca5cd3a8-69f6-4a1e-b1ef-c1a17a4c5a76"
+							},
+							"response": []
+						},
+						{
+							"name": "Post Product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{Token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"camarao\",\r\n  \"description\": null,\r\n  \"price\": 59.45,\r\n  \"categoryProduct\": [\r\n            {\r\n                \"categoryId\": \"c55ec17c-d194-4d12-b2cc-c676e02ee49e\",\r\n                \"productId\": \"9f70f0cd-89e7-43fa-974e-d83c3f720288\"\r\n            },\r\n            {\r\n                \"categoryId\": \"60d774ea-0b69-49bf-8109-7f52e784e65b\",\r\n                \"productId\": \"9f70f0cd-89e7-43fa-974e-d83c3f720288\"\r\n            },\r\n            {\r\n                \"categoryId\": \"C3F0C623-4B2B-4A12-876E-1EC9DB1D18A6\",\r\n                \"productId\": \"C3F0C623-4B2B-4A12-876E-1EC9DB1D18A6\"\r\n            }\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://localhost:7294/Product"
+							},
+							"response": []
+						},
+						{
+							"name": "Put Product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{Token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"camarao\",\r\n  \"description\": null,\r\n  \"price\": 59.45,\r\n  \"categoryProduct\": [\r\n    {\r\n      \"categoryId\": \"C55EC17C-D194-4D12-B2CC-C676E02EE49E\",\r\n      \"productId\": \"C55EC17C-D194-4D12-B2CC-C676E02EE49E\"\r\n    }\r\n  ]\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://localhost:7294/Product"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Product",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{Token}}"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://localhost:7294/Product/9f70f0cd-89e7-43fa-974e-d83c3f720288"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "SUPPLIER",
+					"item": [
+						{
+							"name": "Get List Supplier",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{Token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "https://localhost:7294/Supplier/?Page=0&Size=0&Sort",
+									"protocol": "https",
+									"host": [
+										"localhost"
+									],
+									"port": "7294",
+									"path": [
+										"Supplier",
+										""
+									],
+									"query": [
+										{
+											"key": "Page",
+											"value": "0"
+										},
+										{
+											"key": "Size",
+											"value": "0"
+										},
+										{
+											"key": "Sort",
+											"value": null
+										},
+										{
+											"key": "Direction",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "Search",
+											"value": null,
+											"disabled": true
+										},
+										{
+											"key": "active",
+											"value": "2",
+											"disabled": true
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Get Supplier By Id",
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{Token}}"
+									}
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://localhost:7294/Supplier/7052e113-cd42-4251-8e61-7a4041dd5678"
+							},
+							"response": []
+						},
+						{
+							"name": "Post Supplier",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{Token}}"
+									}
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n  \"name\": \"Micro Keys new\",\r\n  \"document\": \"455-455-455-5855\",\r\n  \"typeSupplier\": 1,\r\n  \"active\": 1,\r\n  \"address\": {\r\n    \"country\": \"Brasil\",\r\n    \"state\": \"Sao Paulo\",\r\n    \"city\": \"Varzea Paulista\",\r\n    \"zipCode\": \"15000-555\",\r\n    \"number\": 999\r\n  }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://localhost:7294/Supplier"
+							},
+							"response": []
+						},
+						{
+							"name": "Put Supplier",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{Token}}"
+									}
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n        \"name\": \"Micro Keys new 2.0\",\r\n        \"document\": \"455-455-455-5855\",\r\n        \"typeSupplier\": 1,\r\n        \"active\": 1,\r\n        \"address\": {\r\n            \"supplierId\": \"13f42fc8-95e6-40f8-869a-99b5da003329\",\r\n            \"country\": \"Brasil\",\r\n            \"state\": \"Sao Paulo\",\r\n            \"city\": \"Varzea Paulista\",\r\n            \"zipCode\": \"15000-555\",\r\n            \"number\": 999,\r\n            \"audit\": {\r\n                \"createdBy\": \"1a77336f-eec8-491d-a348-496d33255011\",\r\n                \"createdDate\": \"2023-06-25T15:46:50.4829335-03:00\",\r\n                \"updatedBy\": null,\r\n                \"updatedDate\": null,\r\n                \"created\": null,\r\n                \"updated\": null\r\n            },\r\n            \"supplier\": null,\r\n            \"id\": \"458dd03b-325c-43c7-abfb-4fb88c333a0e\"\r\n        },\r\n        \"products\": [],\r\n        \"id\": \"13f42fc8-95e6-40f8-869a-99b5da003329\"\r\n    \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://localhost:7294/Supplier"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Supplier",
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": {
+										"token": "{{Token}}"
+									}
+								},
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": "https://localhost:7294/Supplier/7ed0baf1-eb13-4a5d-86ae-bac04cd7ad21"
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
