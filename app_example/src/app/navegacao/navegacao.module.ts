@@ -6,13 +6,15 @@ import { RouterModule } from '@angular/router';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
+import { AccessDeniedComponent } from './access-denied/access-denied.component';
 
 @NgModule({
   declarations: [
     MenuComponent,
     FooterComponent,
     HomeComponent,
-    LoginComponent
+    LoginComponent,
+    AccessDeniedComponent
   ],
   imports: [
     CommonModule,
@@ -24,6 +26,7 @@ import { LoginComponent } from './login/login.component';
     FooterComponent,
     HomeComponent,
     LoginComponent,
+    AccessDeniedComponent,
   ]
 })
 export class NavegacaoModule { }

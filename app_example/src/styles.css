@@ -14,6 +14,14 @@ a.navbar {
   overflow: hidden;
 }
 
+.centralize-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Defina a altura do contêiner principal como 100% da altura da janela (viewport) */
+}
+
 /* Sticky footer styles
     -------------------------------------------------- */
 
