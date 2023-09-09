@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './navegacao/home/home.component';
 import { AccessDeniedComponent } from './navegacao/access-denied/access-denied.component';
+import { NotFoundComponent } from './navegacao/not-found/not-found.component';
 
 const routes: Routes = [
   {
@@ -15,9 +16,17 @@ const routes: Routes = [
   },
 
 
-  {//Rota para acesso negado a algum recurso
+  {
     path: 'access-denied',
     component: AccessDeniedComponent
+  },
+  {
+    path: 'not-found',
+    component: NotFoundComponent
+  },
+  {//Em caso de Erro 404 chama este component, sempre deixar por ultimo para nao ser chamado por engano
+    path: '**',
+    component: NotFoundComponent
   },
 ];
 

@@ -7,6 +7,7 @@ import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { AccessDeniedComponent } from './access-denied/access-denied.component';
+import { NotFoundComponent } from './not-found/not-found.component';
 
 @NgModule({
   declarations: [
@@ -14,7 +15,8 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
     FooterComponent,
     HomeComponent,
     LoginComponent,
-    AccessDeniedComponent
+    AccessDeniedComponent,
+    NotFoundComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +29,7 @@ import { AccessDeniedComponent } from './access-denied/access-denied.component';
     HomeComponent,
     LoginComponent,
     AccessDeniedComponent,
+    NotFoundComponent,
   ]
 })
 export class NavegacaoModule { }
