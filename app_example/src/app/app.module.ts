@@ -4,7 +4,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 
-import { NavegacaoModule } from './navegacao/navegacao.module';
+import { NavigationModule } from './navigation/navigation.module';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -15,7 +15,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    NavegacaoModule,
+    NavigationModule,
     HttpClientModule,
     NgbModule, // Bootstrap para angular
   ],

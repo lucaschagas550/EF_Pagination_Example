@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './navegacao/home/home.component';
-import { AccessDeniedComponent } from './navegacao/access-denied/access-denied.component';
-import { NotFoundComponent } from './navegacao/not-found/not-found.component';
+import { HomeComponent } from './navigation/home/home.component';
+import { AccessDeniedComponent } from './navigation/access-denied/access-denied.component';
+import { NotFoundComponent } from './navigation/not-found/not-found.component';
 
 const routes: Routes = [
   {

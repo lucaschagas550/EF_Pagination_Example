@@ -32,4 +32,4 @@ import { NotFoundComponent } from './not-found/not-found.component';
     NotFoundComponent,
   ]
 })
-export class NavegacaoModule { }
+export class NavigationModule { }
