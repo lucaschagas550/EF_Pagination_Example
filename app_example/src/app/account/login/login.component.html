@@ -1,0 +1,107 @@
+<div class="container main-container">
+  <h1>Login</h1>
+
+  <div>
+    <form novalidate (ngSubmit)="login()" [formGroup]="loginForm">
+      <h4>Entre na sua conta</h4>
+      <hr />
+
+      <div class="form-group row">
+        <div class="alert alert-danger" *ngIf="errors.length > 0">
+          <div class="row">
+            <div class="col-md-6 col-sm-6 col-6">
+              <h3 id="msgRetorno">Opa! Alguma coisa não deu certo:</h3>
+            </div>
+            <div class="col-md-6 col-sm-6 col-6 text-end">
+              <button
+                type="button"
+                (click)="closeError()"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              ></button>
+            </div>
+          </div>
+          <ul>
+            <li *ngFor="let error of errors">{{ error }}</li>
+          </ul>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-4 col-md-6 col-sm-8 col-6">
+            <label class="control-label">E-mail</label>
+            <input
+              class="form-control"
+              id="email"
+              type="text"
+              placeholder="E-mail (requerido)"
+              formControlName="email"
+              [ngClass]="{ 'is-invalid': displayMessage['email'] }"
+            />
+            <span class="text-danger" *ngIf="displayMessage['email']">
+              <p [innerHTML]="displayMessage['email']"></p>
+            </span>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="control-label">Senha</label>
+          <div class="form group col-lg-4 col-md-6 col-sm-8 col-6">
+            <input
+              class="form-control"
+              id="password"
+              [type]="showPassword ? 'text' : 'password'"
+              placeholder="Senha (requerido)"
+              formControlName="password"
+              [ngClass]="{ 'is-invalid': displayMessage['password'] }"
+            />
+          </div>
+
+          <div
+            class="col-md-2 col-sm-1 col-1 d-flex align-items-center"
+            *ngIf="showPassword"
+          >
+            <i class="fas fa-eye" (click)="setPasswordVisibility()"></i>
+          </div>
+
+          <div
+            class="col-md-2 col-sm-1 col-1 d-flex align-items-center"
+            *ngIf="!showPassword"
+          >
+            <i class="fas fa-eye-slash" (click)="setPasswordVisibility()"></i>
+          </div>
+        </div>
+
+        <span class="text-danger" *ngIf="displayMessage['password']">
+          <p [innerHTML]="displayMessage['password']"></p>
+        </span>
+
+        <div class="form-group row">
+          <div class="col-lg-4 col-md-6 col-sm-8 col-6">
+            <button
+              class="btn btn-primary btn-block"
+              id="Login"
+              [disabled]="loginForm.invalid"
+              type="submit"
+            >
+              Login
+            </button>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-lg-4 col-md-6 col-sm-8 col-6">
+            <p class="text-center mt-4">Não possui uma conta ainda?</p>
+            <button
+              class="btn btn-success btn-block"
+              id="Registrar"
+              [routerLink]="['account/register']"
+            >
+              Crie uma nova conta
+            </button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

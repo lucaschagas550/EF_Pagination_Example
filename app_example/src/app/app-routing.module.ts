@@ -14,6 +14,11 @@ const routes: Routes = [
     path: 'home',
     component: HomeComponent,
   },
+  {//lazyload
+    path: 'account',
+    loadChildren: () => import('./account/account.module')
+      .then(module => module.AccountModule)
+  },
 
 
   {

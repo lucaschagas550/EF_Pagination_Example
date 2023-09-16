@@ -1,5 +1,5 @@
 import { environment } from 'src/environments/environment.prod';
-import { LocalStorageUtils } from '../utils/localstorage';
+import { LocalStorageUtils } from '../shared/utils/localstorage';
 import { HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 
 import { Observable, throwError } from 'rxjs';
@@ -29,7 +29,6 @@ export abstract class BaseService {
   protected serviceError(response: Response | any): Observable<never> { //Observable<never> sempre resulta em emitir um valor de erro, nunca de sucesso
     if (response instanceof HttpErrorResponse) {
       let customError: string[] = [];
-      console.log(response);
 
       // Você pode adicionar tratamento personalizado para diferentes tipos de erros aqui, com response.status ou response.statuText
       if (response.statusText === "Unknown Error") {
@@ -38,7 +37,7 @@ export abstract class BaseService {
       }
     }
 
-    console.error(response);
+    console.error('Base service service error final =>', response);
     return throwError(() => response);
   }
 }

@@ -1,0 +1,25 @@
+<ul [ngSwitch]="isLoggedIn()" class="navbar-nav">
+  <li *ngSwitchCase="false" class="nav-item" style="padding-right: 30px">
+    <a class="btn btn-primary" [routerLink]="['/account/login']">Entrar</a>
+  </li>
+
+  <li *ngSwitchCase="true" class="nav-item">
+    <a
+      class="nav-link text-light m-3"
+      id="saudacaoUsuario"
+      href="javascript:void(0)"
+    >
+      {{ user.email }}
+    </a>
+  </li>
+
+  <li *ngSwitchCase="true" class="nav-item">
+    <a
+      class="nav-link text-warning m-3"
+      href="javascript:void(0)"
+      (click)="logout()"
+    >
+      Sair <span class="fas fa-sign-out-alt"></span
+    ></a>
+  </li>
+</ul>
