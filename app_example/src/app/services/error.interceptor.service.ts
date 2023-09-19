@@ -29,7 +29,7 @@ export class ErrorInterceptorService implements HttpInterceptor {
         }
       }
 
-      console.log(`Interceptor: ${error}`);
+      console.log('Interceptor =>', error);
       return throwError(() => error);
     }));
   }

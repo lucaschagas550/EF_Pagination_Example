@@ -10,12 +10,14 @@ import { LoginComponent } from './login/login.component';
 import { AccountComponent } from './account.component';
 
 import { NarikCustomValidatorsModule } from '@narik/custom-validators';
+import { ShowValidationErrorsComponent } from '../shared/components/show-validation-errors/show-validation-errors.component';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
     AccountComponent,
+    ShowValidationErrorsComponent,
   ],
   imports: [
     CommonModule,

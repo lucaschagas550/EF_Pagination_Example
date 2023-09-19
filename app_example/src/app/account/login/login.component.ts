@@ -102,7 +102,7 @@ export class LoginComponent extends FormBaseComponent implements OnInit, AfterVi
     this.showPassword = !this.showPassword
   }
 
-  closeError() {
-    this.errors = [];
+  clearErrors(event: string[]): void {
+    this.errors = event;
   }
 }
