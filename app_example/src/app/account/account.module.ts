@@ -11,6 +11,7 @@ import { AccountComponent } from './account.component';
 
 import { NarikCustomValidatorsModule } from '@narik/custom-validators';
 import { ShowValidationErrorsComponent } from '../shared/components/show-validation-errors/show-validation-errors.component';
+import { RegisterComponent } from './register/register.component';
 
 
 @NgModule({
@@ -18,6 +19,7 @@ import { ShowValidationErrorsComponent } from '../shared/components/show-validat
     LoginComponent,
     AccountComponent,
     ShowValidationErrorsComponent,
+    RegisterComponent,
   ],
   imports: [
     CommonModule,
@@ -29,8 +31,9 @@ import { ShowValidationErrorsComponent } from '../shared/components/show-validat
     NarikCustomValidatorsModule, //Pacote externo de validacoes para campos de formulario
   ],
   exports: [
-    LoginComponent,
     AccountComponent,
+    LoginComponent,
+    RegisterComponent,
   ],
   providers: [
     AccountService,
