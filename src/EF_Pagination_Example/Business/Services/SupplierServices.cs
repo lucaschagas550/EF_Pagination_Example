@@ -11,7 +11,6 @@ namespace EF_Pagination_Example.Business.Services
         private readonly ISupplierRepository _supplierRepository;
         private readonly IAspNetUser _aspNetUser;
 
-
         public SupplierServices(INotifier notifier, IAspNetUser aspNetUser, ISupplierRepository supplierRepository) : base(notifier)
         {
             _supplierRepository = supplierRepository;

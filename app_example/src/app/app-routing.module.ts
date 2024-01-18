@@ -19,7 +19,11 @@ const routes: Routes = [
     loadChildren: () => import('./account/account.module')
       .then(module => module.AccountModule)
   },
-
+  {
+    path: 'category',
+    loadChildren: () => import('./category/category.module')
+      .then(module => module.CategoryModule)
+  },
 
   {
     path: 'access-denied',

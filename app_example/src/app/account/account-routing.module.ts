@@ -14,6 +14,11 @@ const routes: Routes = [{
     {
       path: 'register',
       component: RegisterComponent,
+    },
+    {
+      path: '',
+      redirectTo: 'login', // Redireciona para 'login' quando a rota vazia é acessada
+      pathMatch: 'full', // Certifique-se de que a correspondência seja exata
     }
   ]
 }];

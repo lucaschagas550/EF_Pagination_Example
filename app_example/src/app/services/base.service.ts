@@ -26,6 +26,10 @@ export abstract class BaseService {
     return response.data ?? {}; // retorna um objeto vazio
   }
 
+  protected extractList(response: any): any {
+    return response.data.content ?? {}; // retorna um objeto vazio
+  }
+
   protected serviceError(response: Response | any): Observable<never> { //Observable<never> sempre resulta em emitir um valor de erro, nunca de sucesso
     if (response instanceof HttpErrorResponse) {
       let customError: string[] = [];

@@ -22,10 +22,10 @@ export class ErrorInterceptorService implements HttpInterceptor {
         if (error.status === 401) {
           //Para Fazer => Verificar se tem o refresh token no localstore, se tiver tentar realizar o login no endpoint RefreshToken e se for sucesso ja retornar a rota sem ir a tela de login
           this.localStorageUtil.clearLocalUserData();
-          this.router.navigate(['/conta/login'], { queryParams: { returnUrl: this.router.url } }); // salva no query param, a url para retornar depois de realizar login
+          this.router.navigate(['/account/login'], { queryParams: { returnUrl: this.router.url } }); // salva no query param, a url para retornar depois de realizar login
         }
         if (error.status === 403) {
-          this.router.navigate(['/acesso-negado']);
+          this.router.navigate(['/access-denied']);
         }
       }
 

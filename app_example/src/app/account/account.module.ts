@@ -8,11 +8,10 @@ import { RouterModule } from '@angular/router';
 import { AccountRoutingModule } from './account-routing.module';
 import { LoginComponent } from './login/login.component';
 import { AccountComponent } from './account.component';
-
-import { NarikCustomValidatorsModule } from '@narik/custom-validators';
 import { ShowValidationErrorsComponent } from '../shared/components/show-validation-errors/show-validation-errors.component';
 import { RegisterComponent } from './register/register.component';
 
+import { NarikCustomValidatorsModule } from '@narik/custom-validators';
 
 @NgModule({
   declarations: [
