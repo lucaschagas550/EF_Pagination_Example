@@ -2,13 +2,13 @@
 using EF_Pagination_Example.Model;
 using EF_Pagination_Example.ViewModels;
 using Microsoft.AspNetCore.Identity;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using EF_Pagination_Example.Extensions;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using EF_Pagination_Example.Data.Repositories.Interfaces;
+using System.IdentityModel.Tokens.Jwt;
 
 namespace EF_Pagination_Example.Business.Services
 {

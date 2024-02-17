@@ -81,12 +81,12 @@
 								"auth": {
 									"type": "bearer",
 									"bearer": {
-										"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJBZG1pbiI6WyJSZWFkIiwiSW5zZXJ0IiwiVXBkYXRlIiwiRGVsZXRlIl0sInN1YiI6IjFhNzczMzZmLWVlYzgtNDkxZC1hMzQ4LTQ5NmQzMzI1NTAxMSIsImVtYWlsIjoiYWRtaW5AYWRtaW4uY29tIiwianRpIjoiM2Y2YTJkOGYtYWU1Yy00ZGQ4LWExODctNWNjMTJlZTRmNzBhIiwibmJmIjoxNjg2NzA0NzI2LCJpYXQiOjE2ODY3MDQ3MjYsInJvbGUiOiJBZG1pbiIsImV4cCI6MTY4NjcwODMyNiwiaXNzIjoiaHR0cHM6Ly9sb2NhbGhvc3Q6NzI5NCIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0In0.nd2Ll0IQUgkEzNB71wFaqeSjrHeZMRH2Z8lmp5Ksjq4"
+										"token": "{{Token}}"
 									}
 								},
 								"method": "GET",
 								"header": [],
-								"url": "https://localhost:7294/Category/C3F0C623-4B2B-4A12-876E-1EC9DB1D18A6"
+								"url": "https://localhost:7294/Category/c3f0c623-4b2b-4a12-876e-1ec9db1d18a6"
 							},
 							"response": []
 						},
@@ -481,12 +481,10 @@
 									}
 								},
 								"url": {
-									"raw": "https://localhost:7294/Auth/Login",
-									"protocol": "https",
+									"raw": "{{Url}}/Auth/Login",
 									"host": [
-										"localhost"
+										"{{Url}}"
 									],
-									"port": "7294",
 									"path": [
 										"Auth",
 										"Login"
