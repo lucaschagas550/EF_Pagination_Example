@@ -84,4 +84,11 @@ textarea {
   max-width: 400px;
 }
 /* html, body { height: 100%; } */
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.nav-link.ul-li-active {
+  color: white; /* Usando !important para garantir sobreposição de outros estilos */
+}
