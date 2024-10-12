@@ -1,21 +1,23 @@
 import { MatSort, Sort } from '@angular/material/sort';
-import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CategoryService } from '../services/category.service';
 import { Category } from '../models/category';
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { PaginationListParameters } from 'src/app/shared/utils/pagination-list-parameters';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, OnDestroy {
 
   @ViewChild(MatSort) sort!: MatSort;
   displayedColumns: string[] = ['name', 'description'];
   categories !: Category[];
   paginationParams: PaginationListParameters = new PaginationListParameters();
+  categorySubs !: Subscription;
 
   constructor(
     private categoryService: CategoryService,
@@ -47,7 +49,7 @@ export class ListComponent implements OnInit {
   }
 
   private GetCategories(): void {
-    this.categoryService.getCategories(this.paginationParams).subscribe({
+    this.categorySubs = this.categoryService.getCategories(this.paginationParams).subscribe({
       next: (categories) => {
         //console.log("categorias result => ", categories);
         //testar sem a limpeza das categorias
@@ -57,5 +59,9 @@ export class ListComponent implements OnInit {
       },
       error: (error) => { console.log("erro =>", error); }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.categorySubs.unsubscribe();
   }
 }
