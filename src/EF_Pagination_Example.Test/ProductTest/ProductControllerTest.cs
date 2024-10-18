@@ -18,10 +18,15 @@ namespace EF_Pagination_Example.Test.ProductTest
         [Fact]
         public async Task Test1()
         {
+            // Reset the mock to ensure it's fresh for this test
+            _fixture.Mocker.GetMock<IProductRepository>().Reset();
+
             //Arrange
             var expectedResult = JsonConvert.SerializeObject(new ResponseSuccess(_fixture.products.FirstOrDefault()));
 
-            _fixture.Mocker.GetMock<IProductRepository>().Setup(p => p.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(_fixture.products.FirstOrDefault());
+            _fixture.Mocker.GetMock<IProductRepository>()
+                .Setup(p => p.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(_fixture.products.FirstOrDefault());
 
             //Action
             var actionResult = Response.GetResponse(await _fixture.productController.GetById(Guid.NewGuid()).ConfigureAwait(false));
@@ -34,10 +39,15 @@ namespace EF_Pagination_Example.Test.ProductTest
         [Fact]
         public async Task Test2()
         {
+            // Reset the mock to ensure it's fresh for this test
+            _fixture.Mocker.GetMock<IProductRepository>().Reset();
+
             //Arrange
             var expectedResult = JsonConvert.SerializeObject(new ResponseSuccess(_fixture.products.FirstOrDefault()));
 
-            _fixture.Mocker.GetMock<IProductRepository>().Setup(p => p.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>())).ReturnsAsync(_fixture.products.FirstOrDefault(p => p.Price >= 10));
+            _fixture.Mocker.GetMock<IProductRepository>()
+                .Setup(p => p.GetByIdAsync(It.IsAny<Guid>(), It.IsAny<CancellationToken>()))
+                .ReturnsAsync(_fixture.products.FirstOrDefault(p => p.Price >= 10));
 
             //Action
             var actionResult = Response.GetResponse(await _fixture.productController.GetById(Guid.NewGuid()).ConfigureAwait(false));
